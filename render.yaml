@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: gestione-appartamenti
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 server.py
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: PYTHON_VERSION
+        value: 3.13.5
