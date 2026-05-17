@@ -5,7 +5,7 @@ from datetime import datetime
 from js import Uint8Array
 from workers import Response, WorkerEntrypoint
 
-from legacy_app import parse_workbook
+from workbook_parser import parse_workbook
 
 
 def as_json(payload, status=200):
