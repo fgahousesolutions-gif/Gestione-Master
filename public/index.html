@@ -2049,6 +2049,13 @@
             throw new Error(`${label}: ${error.message}`);
           }
         };
+        const stepAsync = async (label, action) => {
+          try {
+            return await action();
+          } catch (error) {
+            throw new Error(`${label}: ${error.message}`);
+          }
+        };
         step('Consegne', serializeDeliveries);
         step('Utenti staff', serializeStaffUsers);
         step('Impostazioni appartamento', syncVisibleSettingsToSelectedApartment);
@@ -2058,8 +2065,9 @@
         step('Salvataggio utenti staff', saveStaffUsersArchive);
         step('Salvataggio appartamenti', saveApartmentsArchive);
         const body = step('Preparazione invio', () => new FormData(form));
-        const response = await fetch('/api/upload', { method: 'POST', body });
-        const data = await response.json();
+        const uploadUrl = step('Indirizzo upload', () => new URL('/api/upload', window.location.origin).toString());
+        const response = await stepAsync('Invio al server', () => fetch(uploadUrl, { method: 'POST', body }));
+        const data = await stepAsync('Lettura risposta', () => response.json());
         if (!response.ok) throw new Error(data.error || 'Errore durante il caricamento.');
         render(data);
       } catch (error) {
