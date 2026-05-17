@@ -1,5 +1,6 @@
 import json
 import base64
+import re
 from datetime import datetime
 
 from js import Uint8Array
@@ -125,7 +126,8 @@ class Default(WorkerEntrypoint):
             if upload is None:
                 return as_json({"error": "File mancante."}, 400)
 
-            raw = bytes(Uint8Array.new(await upload.arrayBuffer()).to_py())
+            file_bytes = Uint8Array.new(await upload.arrayBuffer())
+            raw = bytes(file_bytes.to_py())
             if not raw:
                 return as_json({"error": "Il file caricato e vuoto."}, 400)
 
@@ -160,24 +162,30 @@ class Default(WorkerEntrypoint):
             except json.JSONDecodeError:
                 deliveries = []
 
-            parsed = parse_workbook(raw, settings=settings, deliveries=deliveries)
-            uploaded_at = datetime.utcnow().isoformat(timespec="seconds")
-            object_key = f"workbooks/{uploaded_at}-{filename}"
+            try:
+                parsed = parse_workbook(raw, settings=settings, deliveries=deliveries)
+                now = datetime.utcnow()
+                uploaded_at = now.isoformat(timespec="seconds")
+                safe_stamp = now.strftime("%Y%m%dT%H%M%SZ")
+                safe_filename = re.sub(r"[^A-Za-z0-9._-]+", "_", filename).strip("_") or "workbook.xlsx"
+                object_key = f"workbooks/{safe_stamp}-{safe_filename}"
 
-            await self.env.UPLOADS.put(object_key, Uint8Array.new(raw))
-            await self.env.DB.prepare(
-                "UPDATE workbook_uploads SET is_current = 0 WHERE is_current = 1"
-            ).run()
-            await self.env.DB.prepare(
-                "INSERT INTO workbook_uploads (object_key, original_name, uploaded_at, is_current) VALUES (?1, ?2, ?3, 1)"
-            ).bind(object_key, filename, uploaded_at).run()
-            await self.env.DB.prepare(
-                """
-                INSERT INTO app_settings (key, value, updated_at)
-                VALUES (?1, ?2, ?3)
-                ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
-                """
-            ).bind("current_state", json.dumps(parsed), uploaded_at).run()
+                await self.env.UPLOADS.put(object_key, file_bytes)
+                await self.env.DB.prepare(
+                    "UPDATE workbook_uploads SET is_current = 0 WHERE is_current = 1"
+                ).run()
+                await self.env.DB.prepare(
+                    "INSERT INTO workbook_uploads (object_key, original_name, uploaded_at, is_current) VALUES (?1, ?2, ?3, 1)"
+                ).bind(object_key, filename, uploaded_at).run()
+                await self.env.DB.prepare(
+                    """
+                    INSERT INTO app_settings (key, value, updated_at)
+                    VALUES (?1, ?2, ?3)
+                    ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
+                    """
+                ).bind("current_state", json.dumps(parsed), uploaded_at).run()
+            except Exception as error:
+                return as_json({"error": f"Errore upload: {error}"}, 500)
 
             return as_json(parsed)
 
