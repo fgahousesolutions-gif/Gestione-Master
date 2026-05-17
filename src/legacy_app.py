@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from io import BytesIO
-import cgi
 import html
 import json
 import os
