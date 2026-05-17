@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "gestione-appartamenti",
+  "main": "src/main.py",
+  "compatibility_date": "2026-05-16",
+  "compatibility_flags": ["python_workers"],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "gestione-appartamenti",
+      "database_id": "3d83612a-3e44-43ee-9583-411bff22005b"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "UPLOADS",
+      "bucket_name": "gestione-appartamenti-uploads"
+    }
+  ]
+}

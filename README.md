@@ -1,57 +1,48 @@
-# Gestione appartamenti
+# Gestione appartamenti - Cloudflare
 
-Mini app locale per caricare il file Excel delle prenotazioni e lavorare su moduli separati:
+Versione destinata al deploy definitivo su Cloudflare Workers.
 
-- pricing
-- biancheria
-- pulizie
-- rendiconto
+## Architettura
 
-## Avvio locale
+- Python Worker: backend e API
+- Assets statici: interfaccia web
+- D1: utenti, permessi, impostazioni
+- R2: ultimo XLS e archivio caricamenti
+- Cloudflare Access: login email con OTP
 
-Serve Python 3, senza librerie esterne.
+## Comandi previsti
 
 ```bash
-python3 server.py
+npm install
+npx wrangler login
+uv run pywrangler dev
 ```
 
-Poi apri:
+Quando la configurazione Cloudflare e pronta:
 
-```text
-http://localhost:8765
+```bash
+npx wrangler login
+npx wrangler d1 create gestione-appartamenti
+npx wrangler r2 bucket create gestione-appartamenti-uploads
+npm run db:migrate:remote
+npm run deploy
 ```
 
-## Dati salvati
+## Stato
 
-La app salva nel browser:
+Questa cartella contiene gia:
 
-- appartamenti registrati
-- parametri per appartamento
-- consegne inserite
-- utenti accesso configurati
+- UI completa
+- parser XLS migrato dentro un Python Worker
+- salvataggio dell'ultimo XLS in R2
+- salvataggio dell'ultimo stato elaborato in D1
+- recupero automatico dell'ultimo stato all'apertura
+- filtraggio lato server per appartamenti visibili
+- visibilita moduli lato interfaccia in base ai permessi
+- upload XLS riservato agli admin
 
-Se apri da un altro dispositivo, quei dati non vengono trasferiti automaticamente perche sono salvati nel browser locale.
+L'autenticazione email va configurata in Cloudflare Access con One-time PIN e policy sugli indirizzi autorizzati.
 
-## Nota deploy online
+## Admin iniziale
 
-Questa versione usa un backend Python (`server.py`). Va bene per uso locale o per hosting Python.
-
-Per andare online con utenti pulizie serve una versione con backend persistente:
-
-- login utenti
-- ruoli: admin, staff pulizie e proprietario
-- login staff con email e codice di verifica via email
-- salvataggio lato server dell'ultimo XLS valido
-- salvataggio lato server delle configurazioni appartamenti
-- permessi per email su appartamenti e moduli visibili
-- vista staff limitata al planning pulizie
-
-La strada consigliata e convertire questa app in una piccola webapp online con backend e storage. Cloudflare Pages statico da solo non basta se vogliamo login, XLS salvato e dati condivisi.
-
-## File deploy inclusi
-
-- `Procfile`: avvio su hosting Python compatibili
-- `render.yaml`: configurazione pronta per Render
-- `requirements.txt`: nessuna dipendenza esterna per ora
-- `.env.example`: variabili ambiente di esempio
-- `DEPLOY_NOTES.md`: promemoria tecnico per la messa online
+- `fgahousesolutions@gmail.com`
