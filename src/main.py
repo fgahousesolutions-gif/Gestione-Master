@@ -86,42 +86,42 @@ def filter_state(state, permissions):
 
 class Default(WorkerEntrypoint):
     async def fetch(self, request):
-        url = request.url
-        method = request.method
+        try:
+            url = request.url
+            method = request.method
 
-        if "/api/health" in url:
-            return as_json({"ok": True, "service": "gestione-appartamenti"})
+            if "/api/health" in url:
+                return as_json({"ok": True, "service": "gestione-appartamenti"})
 
-        if method == "GET" and "/api/current" in url:
-            user = await current_user(self.env, request)
-            permissions = await user_permissions(self.env, user)
-            row = await self.env.DB.prepare(
-                "SELECT value FROM app_settings WHERE key = ?1"
-            ).bind("current_state").first()
-            if row is None:
-                return as_json({"state": None})
-            return as_json({"state": filter_state(json.loads(str(row.value)), permissions)})
+            if method == "GET" and "/api/current" in url:
+                user = await current_user(self.env, request)
+                permissions = await user_permissions(self.env, user)
+                row = await self.env.DB.prepare(
+                    "SELECT value FROM app_settings WHERE key = ?1"
+                ).bind("current_state").first()
+                if row is None:
+                    return as_json({"state": None})
+                return as_json({"state": filter_state(json.loads(str(row.value)), permissions)})
 
-        if method == "GET" and "/api/me" in url:
-            user = await current_user(self.env, request)
-            permissions = await user_permissions(self.env, user)
-            if user is None or permissions is None:
-                return as_json({"authenticated": False}, 401)
-            return as_json({
-                "authenticated": True,
-                "email": user.email,
-                "displayName": user.display_name,
-                "role": user.role,
-                "apartments": None if permissions["apartments"] is None else sorted(permissions["apartments"]),
-                "modules": None if permissions["modules"] is None else sorted(permissions["modules"]),
-            })
+            if method == "GET" and "/api/me" in url:
+                user = await current_user(self.env, request)
+                permissions = await user_permissions(self.env, user)
+                if user is None or permissions is None:
+                    return as_json({"authenticated": False}, 401)
+                return as_json({
+                    "authenticated": True,
+                    "email": user.email,
+                    "displayName": user.display_name,
+                    "role": user.role,
+                    "apartments": None if permissions["apartments"] is None else sorted(permissions["apartments"]),
+                    "modules": None if permissions["modules"] is None else sorted(permissions["modules"]),
+                })
 
-        if method == "POST" and "/api/upload" in url:
-            user = await current_user(self.env, request)
-            permissions = await user_permissions(self.env, user)
-            if permissions is None or permissions["role"] != "admin":
-                return as_json({"error": "Solo admin puo caricare il file XLS."}, 403)
-            try:
+            if method == "POST" and "/api/upload" in url:
+                user = await current_user(self.env, request)
+                permissions = await user_permissions(self.env, user)
+                if permissions is None or permissions["role"] != "admin":
+                    return as_json({"error": "Solo admin puo caricare il file XLS."}, 403)
                 filename = str(request.headers.get("X-File-Name") or "")
                 if not filename:
                     return as_json({"error": "Nome file mancante."}, 400)
@@ -164,9 +164,8 @@ class Default(WorkerEntrypoint):
                     ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
                     """
                 ).bind("current_state", json.dumps(parsed), uploaded_at).run()
-            except Exception as error:
-                return as_json({"error": f"Errore upload: {error}"}, 500)
+                return as_json(parsed)
 
-            return as_json(parsed)
-
-        return await self.env.ASSETS.fetch(request)
+            return await self.env.ASSETS.fetch(request)
+        except Exception as error:
+            return as_json({"error": f"Errore worker: {error}"}, 500)
