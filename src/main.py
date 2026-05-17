@@ -128,7 +128,8 @@ class Default(WorkerEntrypoint):
                 if not filename.lower().endswith(".xlsx"):
                     return as_json({"error": "Formato file non supportato: carica un file Excel .xlsx."}, 400)
 
-                file_bytes = Uint8Array.new(await request.arrayBuffer())
+                request_copy = request.clone()
+                file_bytes = Uint8Array.new(await request_copy.arrayBuffer())
                 raw = bytes(file_bytes.to_py())
                 if not raw:
                     return as_json({"error": "Il file caricato e vuoto."}, 400)
@@ -150,7 +151,7 @@ class Default(WorkerEntrypoint):
                 safe_filename = re.sub(r"[^A-Za-z0-9._-]+", "_", filename).strip("_") or "workbook.xlsx"
                 object_key = f"workbooks/{safe_stamp}-{safe_filename}"
 
-                await self.env.UPLOADS.put(object_key, file_bytes)
+                await self.env.UPLOADS.put(object_key, request.body)
                 await self.env.DB.prepare(
                     "UPDATE workbook_uploads SET is_current = 0 WHERE is_current = 1"
                 ).run()
