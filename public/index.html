@@ -2067,16 +2067,20 @@
         step('Salvataggio appartamenti', saveApartmentsArchive);
         const file = step('Lettura file', () => fileInput.files[0]);
         if (!file) throw new Error('Seleziona prima un file Excel.');
+        const fieldValue = (name, fallback = '') => {
+          const field = form.querySelector(`[name="${name}"]`);
+          return field ? field.value : fallback;
+        };
         const settingsPayload = step('Preparazione impostazioni', () => JSON.stringify({
-          threshold: Number(form.querySelector('[name="threshold"]').value || 2),
-          bedGuests: Number(form.querySelector('[name="bedGuests"]').value || 2),
-          bathGuests: Number(form.querySelector('[name="bathGuests"]').value || 1),
-          matsStandard: Number(form.querySelector('[name="matsStandard"]').value || 1),
-          matsExtra: Number(form.querySelector('[name="matsExtra"]').value || 0),
-          startBed: Number(form.querySelector('[name="startBed"]').value || 0),
-          startBath: Number(form.querySelector('[name="startBath"]').value || 0),
-          startMats: Number(form.querySelector('[name="startMats"]').value || 0),
-          startDate: form.querySelector('[name="startDate"]').value || '',
+          threshold: Number(fieldValue('threshold', 2) || 2),
+          bedGuests: Number(fieldValue('bedGuests', 2) || 2),
+          bathGuests: Number(fieldValue('bathGuests', 1) || 1),
+          matsStandard: Number(fieldValue('matsStandard', 1) || 1),
+          matsExtra: Number(fieldValue('matsExtra', 0) || 0),
+          startBed: Number(fieldValue('startBed', 0) || 0),
+          startBath: Number(fieldValue('startBath', 0) || 0),
+          startMats: Number(fieldValue('startMats', 0) || 0),
+          startDate: fieldValue('startDate', ''),
           apartments: JSON.parse(apartmentsInput.value || '[]'),
           pricing: JSON.parse(pricingInput.value || '[]'),
         }));
