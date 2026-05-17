@@ -122,44 +122,24 @@ class Default(WorkerEntrypoint):
             if permissions is None or permissions["role"] != "admin":
                 return as_json({"error": "Solo admin puo caricare il file XLS."}, 403)
             try:
-                form = await request.formData()
-                upload = form.get("file")
-                if upload is None:
-                    return as_json({"error": "File mancante."}, 400)
+                filename = str(request.headers.get("X-File-Name") or "")
+                if not filename:
+                    return as_json({"error": "Nome file mancante."}, 400)
+                if not filename.lower().endswith(".xlsx"):
+                    return as_json({"error": "Formato file non supportato: carica un file Excel .xlsx."}, 400)
 
-                file_bytes = Uint8Array.new(await upload.arrayBuffer())
+                file_bytes = Uint8Array.new(await request.arrayBuffer())
                 raw = bytes(file_bytes.to_py())
                 if not raw:
                     return as_json({"error": "Il file caricato e vuoto."}, 400)
 
-                filename = str(upload.name or "")
-                if not filename.lower().endswith(".xlsx"):
-                    return as_json({"error": "Formato file non supportato: carica un file Excel .xlsx."}, 400)
-
-                settings = {
-                    "threshold": form_number(form, "threshold", 2),
-                    "bedGuests": form_number(form, "bedGuests", 2),
-                    "bathGuests": form_number(form, "bathGuests", 1),
-                    "matsStandard": form_number(form, "matsStandard", 1),
-                    "matsExtra": form_number(form, "matsExtra", 0),
-                    "startBed": form_number(form, "startBed", 0),
-                    "startBath": form_number(form, "startBath", 0),
-                    "startMats": form_number(form, "startMats", 0),
-                    "startDate": str(form.get("startDate") or "").strip(),
-                }
-
                 try:
-                    settings["apartments"] = json.loads(str(form.get("apartments") or "[]"))
+                    settings = json.loads(str(request.headers.get("X-App-Settings") or "{}"))
                 except json.JSONDecodeError:
-                    settings["apartments"] = []
+                    settings = {}
 
                 try:
-                    settings["pricing"] = json.loads(str(form.get("pricing") or "[]"))
-                except json.JSONDecodeError:
-                    settings["pricing"] = []
-
-                try:
-                    deliveries = json.loads(str(form.get("deliveries") or "[]"))
+                    deliveries = json.loads(str(request.headers.get("X-Deliveries") or "[]"))
                 except json.JSONDecodeError:
                     deliveries = []
 
