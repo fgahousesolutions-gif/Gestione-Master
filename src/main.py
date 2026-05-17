@@ -122,26 +122,25 @@ class Default(WorkerEntrypoint):
                 permissions = await user_permissions(self.env, user)
                 if permissions is None or permissions["role"] != "admin":
                     return as_json({"error": "Solo admin puo caricare il file XLS."}, 403)
-                filename = str(request.headers.get("X-File-Name") or "")
+                payload = await request.json()
+                filename = str(payload.get("filename") or "")
                 if not filename:
                     return as_json({"error": "Nome file mancante."}, 400)
                 if not filename.lower().endswith(".xlsx"):
                     return as_json({"error": "Formato file non supportato: carica un file Excel .xlsx."}, 400)
 
-                request_copy = request.clone()
-                file_bytes = Uint8Array.new(await request_copy.arrayBuffer())
-                raw = bytes(file_bytes.to_py())
+                raw = base64.b64decode(str(payload.get("contentBase64") or ""))
                 if not raw:
                     return as_json({"error": "Il file caricato e vuoto."}, 400)
 
                 try:
-                    settings = json.loads(str(request.headers.get("X-App-Settings") or "{}"))
-                except json.JSONDecodeError:
+                    settings = payload.get("settings") or {}
+                except Exception:
                     settings = {}
 
                 try:
-                    deliveries = json.loads(str(request.headers.get("X-Deliveries") or "[]"))
-                except json.JSONDecodeError:
+                    deliveries = payload.get("deliveries") or []
+                except Exception:
                     deliveries = []
 
                 parsed = parse_workbook(raw, settings=settings, deliveries=deliveries)
@@ -151,7 +150,7 @@ class Default(WorkerEntrypoint):
                 safe_filename = re.sub(r"[^A-Za-z0-9._-]+", "_", filename).strip("_") or "workbook.xlsx"
                 object_key = f"workbooks/{safe_stamp}-{safe_filename}"
 
-                await self.env.UPLOADS.put(object_key, request.body)
+                await self.env.UPLOADS.put(object_key, Uint8Array.new(raw))
                 await self.env.DB.prepare(
                     "UPDATE workbook_uploads SET is_current = 0 WHERE is_current = 1"
                 ).run()
