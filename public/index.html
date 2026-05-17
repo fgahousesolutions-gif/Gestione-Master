@@ -1109,6 +1109,7 @@
   <script>
     const form = document.getElementById('uploadForm');
     const button = document.getElementById('uploadButton');
+    const fileInput = form.querySelector('input[type="file"]');
     const errorBox = document.getElementById('errorBox');
     const noticeBox = document.getElementById('noticeBox');
     const deliveriesBox = document.getElementById('deliveries');
@@ -2064,9 +2065,33 @@
         step('Salvataggio consegne', saveDeliveriesArchive);
         step('Salvataggio utenti staff', saveStaffUsersArchive);
         step('Salvataggio appartamenti', saveApartmentsArchive);
-        const body = step('Preparazione invio', () => new FormData(form));
+        const file = step('Lettura file', () => fileInput.files[0]);
+        if (!file) throw new Error('Seleziona prima un file Excel.');
+        const settingsPayload = step('Preparazione impostazioni', () => JSON.stringify({
+          threshold: Number(form.querySelector('[name="threshold"]').value || 2),
+          bedGuests: Number(form.querySelector('[name="bedGuests"]').value || 2),
+          bathGuests: Number(form.querySelector('[name="bathGuests"]').value || 1),
+          matsStandard: Number(form.querySelector('[name="matsStandard"]').value || 1),
+          matsExtra: Number(form.querySelector('[name="matsExtra"]').value || 0),
+          startBed: Number(form.querySelector('[name="startBed"]').value || 0),
+          startBath: Number(form.querySelector('[name="startBath"]').value || 0),
+          startMats: Number(form.querySelector('[name="startMats"]').value || 0),
+          startDate: form.querySelector('[name="startDate"]').value || '',
+          apartments: JSON.parse(apartmentsInput.value || '[]'),
+          pricing: JSON.parse(pricingInput.value || '[]'),
+        }));
+        const deliveriesPayload = step('Preparazione consegne', () => deliveriesInput.value || '[]');
         const uploadUrl = step('Indirizzo upload', () => new URL('/api/upload', window.location.origin).toString());
-        const response = await stepAsync('Invio al server', () => fetch(uploadUrl, { method: 'POST', body }));
+        const response = await stepAsync('Invio al server', () => fetch(uploadUrl, {
+          method: 'POST',
+          body: file,
+          headers: {
+            'content-type': file.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'x-file-name': file.name,
+            'x-app-settings': settingsPayload,
+            'x-deliveries': deliveriesPayload,
+          },
+        }));
         const responseText = await stepAsync('Lettura risposta', () => response.text());
         const data = step('Interpretazione risposta', () => {
           try {
