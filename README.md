@@ -30,7 +30,7 @@ npm run deploy
 
 ## Stato
 
-Questa cartella contiene gia:
+Questa cartella contiene gia.:
 
 - UI completa
 - parser XLS migrato dentro un Python Worker
