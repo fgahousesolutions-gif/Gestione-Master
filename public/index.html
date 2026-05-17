@@ -2067,7 +2067,15 @@
         const body = step('Preparazione invio', () => new FormData(form));
         const uploadUrl = step('Indirizzo upload', () => new URL('/api/upload', window.location.origin).toString());
         const response = await stepAsync('Invio al server', () => fetch(uploadUrl, { method: 'POST', body }));
-        const data = await stepAsync('Lettura risposta', () => response.json());
+        const responseText = await stepAsync('Lettura risposta', () => response.text());
+        const data = step('Interpretazione risposta', () => {
+          try {
+            return JSON.parse(responseText);
+          } catch {
+            const preview = responseText.slice(0, 180).replace(/\s+/g, ' ').trim();
+            throw new Error(`Risposta non JSON (${response.status}): ${preview || 'vuota'}`);
+          }
+        });
         if (!response.ok) throw new Error(data.error || 'Errore durante il caricamento.');
         render(data);
       } catch (error) {
