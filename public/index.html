@@ -2042,15 +2042,22 @@
       button.textContent = 'Aggiorno...';
       refreshButton.textContent = 'Aggiorno...';
       try {
-        serializeDeliveries();
-        serializeStaffUsers();
-        syncVisibleSettingsToSelectedApartment();
-        serializeApartments();
-        savePricingArchive();
-        saveDeliveriesArchive();
-        saveStaffUsersArchive();
-        saveApartmentsArchive();
-        const body = new FormData(form);
+        const step = (label, action) => {
+          try {
+            return action();
+          } catch (error) {
+            throw new Error(`${label}: ${error.message}`);
+          }
+        };
+        step('Consegne', serializeDeliveries);
+        step('Utenti staff', serializeStaffUsers);
+        step('Impostazioni appartamento', syncVisibleSettingsToSelectedApartment);
+        step('Archivio appartamenti', serializeApartments);
+        step('Archivio pricing', savePricingArchive);
+        step('Salvataggio consegne', saveDeliveriesArchive);
+        step('Salvataggio utenti staff', saveStaffUsersArchive);
+        step('Salvataggio appartamenti', saveApartmentsArchive);
+        const body = step('Preparazione invio', () => new FormData(form));
         const response = await fetch('/api/upload', { method: 'POST', body });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Errore durante il caricamento.');
