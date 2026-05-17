@@ -122,7 +122,7 @@ class Default(WorkerEntrypoint):
                 permissions = await user_permissions(self.env, user)
                 if permissions is None or permissions["role"] != "admin":
                     return as_json({"error": "Solo admin puo caricare il file XLS."}, 403)
-                payload = await request.json()
+                payload = (await request.json()).to_py()
                 filename = str(payload.get("filename") or "")
                 if not filename:
                     return as_json({"error": "Nome file mancante."}, 400)
