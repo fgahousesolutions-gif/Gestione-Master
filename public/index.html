@@ -2071,7 +2071,7 @@
           const field = form.querySelector(`[name="${name}"]`);
           return field ? field.value : fallback;
         };
-        const settingsPayload = step('Preparazione impostazioni', () => JSON.stringify({
+        const settingsPayload = step('Preparazione impostazioni', () => ({
           threshold: Number(fieldValue('threshold', 2) || 2),
           bedGuests: Number(fieldValue('bedGuests', 2) || 2),
           bathGuests: Number(fieldValue('bathGuests', 1) || 1),
@@ -2084,16 +2084,26 @@
           apartments: JSON.parse(apartmentsInput.value || '[]'),
           pricing: JSON.parse(pricingInput.value || '[]'),
         }));
-        const deliveriesPayload = step('Preparazione consegne', () => deliveriesInput.value || '[]');
+        const deliveriesPayload = step('Preparazione consegne', () => JSON.parse(deliveriesInput.value || '[]'));
+        const fileBuffer = await stepAsync('Lettura contenuto file', () => file.arrayBuffer());
+        const contentBase64 = step('Codifica file', () => {
+          const bytes = new Uint8Array(fileBuffer);
+          let binary = '';
+          bytes.forEach(byte => binary += String.fromCharCode(byte));
+          return btoa(binary);
+        });
+        const requestPayload = step('Preparazione richiesta', () => JSON.stringify({
+          filename: file.name,
+          contentBase64,
+          settings: settingsPayload,
+          deliveries: deliveriesPayload,
+        }));
         const uploadUrl = step('Indirizzo upload', () => new URL('/api/upload', window.location.origin).toString());
         const response = await stepAsync('Invio al server', () => fetch(uploadUrl, {
           method: 'POST',
-          body: file,
+          body: requestPayload,
           headers: {
-            'content-type': file.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'x-file-name': file.name,
-            'x-app-settings': settingsPayload,
-            'x-deliveries': deliveriesPayload,
+            'content-type': 'application/json',
           },
         }));
         const responseText = await stepAsync('Lettura risposta', () => response.text());
