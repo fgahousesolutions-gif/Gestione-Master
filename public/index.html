@@ -32,6 +32,21 @@
     h1 { margin: 0 0 8px; font-size: clamp(24px, 4vw, 38px); letter-spacing: 0; }
     p { margin: 0; color: var(--muted); line-height: 1.45; }
     main { padding: 22px clamp(16px, 4vw, 44px) 44px; }
+    .freshness {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      background: #edf6f2;
+      border: 1px solid #b7ddcc;
+      border-radius: 8px;
+      color: #185c43;
+      font-weight: 800;
+    }
+    .freshness.active {
+      display: flex;
+    }
     .upload {
       display: grid;
       grid-template-columns: minmax(220px, 1fr) auto;
@@ -719,6 +734,13 @@
     body.staff-mode [data-module-view="pulizie"] {
       display: block;
     }
+    body.non-admin-mode #uploadForm,
+    body.non-admin-mode #configToggle,
+    body.non-admin-mode #staffConfigToggle,
+    body.non-admin-mode #configPanel,
+    body.non-admin-mode #staffPanel {
+      display: none !important;
+    }
     .grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
@@ -871,6 +893,10 @@
     <p>Carica il file Excel una volta: vengono usati solo i fogli appartamento che iniziano con ID00. Poi scegli il modulo operativo.</p>
   </header>
   <main>
+    <div class="freshness" id="globalUpdatedBox">
+      <span>Ultimo aggiornamento dati:</span>
+      <strong>-</strong>
+    </div>
     <form class="upload" id="uploadForm">
       <input id="fileInput" name="file" type="file" accept=".xlsx" required>
       <div class="top-actions">
@@ -1176,6 +1202,7 @@
     const moduleButtons = [...document.querySelectorAll('[data-module-target]')];
     const moduleViews = [...document.querySelectorAll('[data-module-view]')];
     const cleaningUpdatedBox = document.getElementById('cleaningUpdatedBox');
+    const globalUpdatedBox = document.getElementById('globalUpdatedBox');
     const calendarGrid = document.getElementById('calendarGrid');
     const calendarMonthLabel = document.getElementById('calendarMonthLabel');
     const calendarPrev = document.getElementById('calendarPrev');
@@ -1838,6 +1865,11 @@
 
     function render(data) {
       lastData = data;
+      if (globalUpdatedBox) {
+        globalUpdatedBox.classList.add('active');
+        const strong = globalUpdatedBox.querySelector('strong');
+        if (strong) strong.textContent = fmtDateTimeValue(data.uploadedAt || data.generatedAt);
+      }
       if (cleaningUpdatedBox) {
         cleaningUpdatedBox.classList.add('active');
         const strong = cleaningUpdatedBox.querySelector('strong');
@@ -2051,7 +2083,11 @@
     fetch('/api/me')
       .then(response => response.ok ? response.json() : null)
       .then(me => {
-        if (!me || !Array.isArray(me.modules)) return;
+        if (!me) return;
+        if (me.role !== 'admin') {
+          document.body.classList.add('non-admin-mode');
+        }
+        if (!Array.isArray(me.modules)) return;
         moduleButtons.forEach(button => {
           const allowed = me.modules.includes(button.dataset.moduleTarget);
           button.style.display = allowed ? '' : 'none';
