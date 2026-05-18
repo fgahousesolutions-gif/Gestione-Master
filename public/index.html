@@ -418,8 +418,17 @@
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
-    .calendar-booking.ends-today {
-      margin-right: calc(50% + 4px);
+    .calendar-checkout-cap {
+      z-index: 2;
+      align-self: start;
+      width: calc(50% - 4px);
+      height: 28px;
+      margin: 34px 0 0 0;
+      border: 1px solid #c6dbe8;
+      border-left: 0;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+      background: #e9f2f7;
     }
     .calendar-booking small {
       color: var(--muted);
@@ -1293,23 +1302,23 @@
         if (!row.checkIn || !row.checkOut) return;
         const bookingStart = new Date(row.checkIn + 'T00:00:00');
         const bookingEnd = new Date(row.checkOut + 'T00:00:00');
-        const visualEnd = new Date(bookingEnd);
-        visualEnd.setDate(visualEnd.getDate() + 1);
-        if (visualEnd <= start || bookingStart >= end) return;
+        if (bookingEnd <= start || bookingStart >= end) return;
         for (let week = 0; week < 6; week++) {
           const weekStart = new Date(start);
           weekStart.setDate(start.getDate() + week * 7);
           const weekEnd = new Date(weekStart);
           weekEnd.setDate(weekStart.getDate() + 7);
           const segmentStart = bookingStart > weekStart ? bookingStart : weekStart;
-          const segmentEnd = visualEnd < weekEnd ? visualEnd : weekEnd;
+          const segmentEnd = bookingEnd < weekEnd ? bookingEnd : weekEnd;
           if (segmentStart >= segmentEnd) continue;
           weeklySegments[week].push({
             startCol: Math.floor((segmentStart - weekStart) / 86400000) + 1,
             span: Math.floor((segmentEnd - segmentStart) / 86400000),
             continuesLeft: bookingStart < weekStart,
-            continuesRight: visualEnd > weekEnd,
-            endsToday: bookingEnd >= weekStart && bookingEnd < weekEnd,
+            continuesRight: bookingEnd > weekEnd,
+            checkoutCol: bookingEnd >= weekStart && bookingEnd < weekEnd
+              ? Math.floor((bookingEnd - weekStart) / 86400000) + 1
+              : null,
             label: `${channelCode(row.ota)} ${row.guestName || 'Ospite'}`,
             apartment: row.apartmentLabel || row.apartment,
           });
@@ -1331,13 +1340,17 @@
               'calendar-booking',
               segment.continuesLeft ? 'continues-left' : '',
               segment.continuesRight ? 'continues-right' : '',
-              segment.endsToday ? 'ends-today' : '',
             ].filter(Boolean).join(' ');
             bars.push(`
               <div class="${classes}" style="grid-column:${segment.startCol} / span ${segment.span}; grid-row:${week + 1}; margin-top:${34 + lane * 32}px">
                 ${esc(segment.label)} <small>${esc(segment.apartment)}</small>
               </div>
             `);
+            if (segment.checkoutCol) {
+              bars.push(`
+                <div class="calendar-checkout-cap" style="grid-column:${segment.checkoutCol}; grid-row:${week + 1}; margin-top:${34 + lane * 32}px"></div>
+              `);
+            }
           });
       });
       calendarGrid.innerHTML = cells.join('') + bars.join('');
