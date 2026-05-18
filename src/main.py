@@ -8,6 +8,8 @@ from workers import Response, WorkerEntrypoint
 
 from workbook_parser import parse_workbook
 
+ALL_MODULES = ("pricing", "calendario", "biancheria", "pulizie", "rendiconto")
+
 
 def as_json(payload, status=200):
     return Response(
@@ -84,6 +86,58 @@ def filter_state(state, permissions):
     return filtered
 
 
+def split_csv(value):
+    return [item.strip() for item in str(value or "").split(",") if item.strip()]
+
+
+async def sync_staff_users(env, rows, parsed):
+    apartment_ids = [row.get("name") for row in parsed.get("workbookSheets", []) if row.get("name")]
+    for row in rows:
+        email = str(row.get("email") or "").strip().lower()
+        if not email:
+            continue
+        display_name = str(row.get("code") or email).strip()
+        phone = str(row.get("phone") or "").strip() or None
+        role = str(row.get("role") or "pulizie").strip()
+        if role not in {"admin", "pulizie", "proprietario"}:
+            role = "pulizie"
+        is_active = 1 if str(row.get("active") or "").lower() in {"1", "true", "on", "si", "sì"} else 0
+
+        await env.DB.prepare(
+            """
+            INSERT INTO users (email, display_name, phone, role, is_active)
+            VALUES (?1, ?2, ?3, ?4, ?5)
+            ON CONFLICT(email) DO UPDATE SET
+              display_name = excluded.display_name,
+              phone = excluded.phone,
+              role = excluded.role,
+              is_active = excluded.is_active
+            """
+        ).bind(email, display_name, phone, role, is_active).run()
+        user = await env.DB.prepare("SELECT id FROM users WHERE email = ?1").bind(email).first()
+        if user is None:
+            continue
+
+        await env.DB.prepare("DELETE FROM apartment_permissions WHERE user_id = ?1").bind(user.id).run()
+        await env.DB.prepare("DELETE FROM module_permissions WHERE user_id = ?1").bind(user.id).run()
+
+        if role == "admin":
+            continue
+
+        allowed_apartments = split_csv(row.get("apartments")) or apartment_ids
+        allowed_modules = split_csv(row.get("modules")) or list(ALL_MODULES)
+        for apartment_id in allowed_apartments:
+            await env.DB.prepare(
+                "INSERT OR IGNORE INTO apartment_permissions (user_id, apartment_id) VALUES (?1, ?2)"
+            ).bind(user.id, apartment_id).run()
+        for module_key in allowed_modules:
+            if module_key not in ALL_MODULES:
+                continue
+            await env.DB.prepare(
+                "INSERT OR IGNORE INTO module_permissions (user_id, module_key) VALUES (?1, ?2)"
+            ).bind(user.id, module_key).run()
+
+
 class Default(WorkerEntrypoint):
     async def fetch(self, request):
         try:
@@ -144,8 +198,13 @@ class Default(WorkerEntrypoint):
                     deliveries = payload.get("deliveries") or []
                 except Exception:
                     deliveries = []
+                try:
+                    staff_users = payload.get("staffUsers") or []
+                except Exception:
+                    staff_users = []
 
                 parsed = parse_workbook(raw, settings=settings, deliveries=deliveries)
+                await sync_staff_users(self.env, staff_users, parsed)
                 now = datetime.utcnow()
                 uploaded_at = now.isoformat(timespec="seconds")
                 safe_stamp = now.strftime("%Y%m%dT%H%M%SZ")
@@ -167,6 +226,22 @@ class Default(WorkerEntrypoint):
                     """
                 ).bind("current_state", json.dumps(parsed), uploaded_at).run()
                 return as_json(parsed)
+
+            if method == "POST" and "/api/staff-users" in url:
+                user = await current_user(self.env, request)
+                permissions = await user_permissions(self.env, user)
+                if permissions is None or permissions["role"] != "admin":
+                    return as_json({"error": "Solo admin puo salvare gli utenti."}, 403)
+                payload = await request.json()
+                if hasattr(payload, "to_py"):
+                    payload = payload.to_py()
+                rows = payload.get("staffUsers") or []
+                row = await self.env.DB.prepare(
+                    "SELECT value FROM app_settings WHERE key = ?1"
+                ).bind("current_state").first()
+                parsed = json.loads(str(row.value)) if row is not None else {"workbookSheets": []}
+                await sync_staff_users(self.env, rows, parsed)
+                return as_json({"ok": True, "saved": len(rows)})
 
             return await self.env.ASSETS.fetch(request)
         except Exception as error:
