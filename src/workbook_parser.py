@@ -754,9 +754,7 @@ def parse_workbook(raw, settings=None, deliveries=None):
                 has_dates = bool(check_in and check_out)
                 if not has_dates:
                     continue
-                if check_in < start_from:
-                    continue
-                pricing_events.append({
+                reservation_event = {
                     "kind": "booking",
                     "date": check_in,
                     "row": row_idx,
@@ -772,7 +770,11 @@ def parse_workbook(raw, settings=None, deliveries=None):
                     "extraBed": boolish(row.get(col_extra_bed)) if col_extra_bed else False,
                     "amount": money_or_none(row.get(col_amount)) if col_amount else None,
                     "currentPrice": money_or_none(row.get(col_current_price)) if col_current_price else None,
-                })
+                }
+                all_reservations.append(reservation_event)
+                if check_in < start_from:
+                    continue
+                pricing_events.append(reservation_event)
                 table_pricing_events += 1
                 if not col_guests:
                     continue
@@ -825,7 +827,6 @@ def parse_workbook(raw, settings=None, deliveries=None):
 
         price_config = pricing_settings(settings, sheet["name"])
         pricing_results.append(build_pricing_calendar(sheet["name"], meta["label"], pricing_events, price_config, today))
-        all_reservations.extend(pricing_events)
         sorted_pricing_events = sorted(pricing_events, key=lambda event: (event.get("checkIn") or "", event.get("checkOut") or ""))
         for idx, event in enumerate(sorted_pricing_events):
             check_out = event.get("checkOut")
