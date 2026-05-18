@@ -1330,12 +1330,12 @@
         segments
           .sort((a, b) => a.startCol - b.startCol || b.span - a.span || a.apartment.localeCompare(b.apartment, 'it'))
           .forEach(segment => {
-            let lane = laneEnds.findIndex(endCol => segment.startCol > endCol);
+            let lane = laneEnds.findIndex(endCol => segment.startCol > endCol + 1);
             if (lane === -1) {
               lane = laneEnds.length;
               laneEnds.push(0);
             }
-            laneEnds[lane] = segment.startCol + segment.span - 1;
+            laneEnds[lane] = segment.checkoutCol || (segment.startCol + segment.span - 1);
             const classes = [
               'calendar-booking',
               segment.continuesLeft ? 'continues-left' : '',
