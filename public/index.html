@@ -207,6 +207,10 @@
     .apartment-panel th, .apartment-panel td {
       padding: 6px 8px;
     }
+    .apartment-panel th.price-limit,
+    .apartment-panel td.price-limit {
+      min-width: 108px;
+    }
     .apartment-panel input, .toolbar select {
       width: 100%;
       padding: 7px;
@@ -901,8 +905,8 @@
                 <th class="num">Prezzo weekend</th>
                 <th class="num">Pulizie</th>
                 <th class="num">Extra</th>
-                <th class="num">Min</th>
-                <th class="num">Max</th>
+                <th class="num price-limit">Prezzo<br>minimo</th>
+                <th class="num price-limit">Prezzo<br>massimo</th>
                 <th class="num">Letto start</th>
                 <th class="num">Bagno start</th>
                 <th class="num">Tappeti start</th>
@@ -951,6 +955,11 @@
           <button class="ghost" type="button" id="exportDeliveries">Scarica CSV consegne</button>
           <button class="ghost" type="button" id="importDeliveries">Importa archivio</button>
         </div>
+      </div>
+    </section>
+    <section class="panel config-panel" id="staffPanel">
+      <h2>Scheda utenti staff</h2>
+      <div class="settings">
         <div class="subhead" id="staffUsersSection">Utenti accesso</div>
         <div class="staff-panel table-wrap">
           <table>
@@ -972,6 +981,7 @@
         </div>
         <div class="delivery-actions">
           <button class="ghost" type="button" id="addStaffUser">Aggiungi utente</button>
+          <button type="button" id="saveStaffUsers">Salva utenti</button>
         </div>
       </div>
     </section>
@@ -1150,12 +1160,14 @@
     const staffConfigToggle = document.getElementById('staffConfigToggle');
     const staffUsersSection = document.getElementById('staffUsersSection');
     const configPanel = document.getElementById('configPanel');
+    const staffPanel = document.getElementById('staffPanel');
     const addDelivery = document.getElementById('addDelivery');
     const refreshButton = document.getElementById('refreshButton');
     const exportDeliveries = document.getElementById('exportDeliveries');
     const importDeliveries = document.getElementById('importDeliveries');
     const importDeliveriesFile = document.getElementById('importDeliveriesFile');
     const addStaffUser = document.getElementById('addStaffUser');
+    const saveStaffUsers = document.getElementById('saveStaffUsers');
     const supplierEmail = document.getElementById('supplierEmail');
     const supplierWhatsapp = document.getElementById('supplierWhatsapp');
     const copySupplierText = document.getElementById('copySupplierText');
@@ -1487,8 +1499,8 @@
         <td><input data-apartment="weekendPrice" type="number" min="0" step="1" value="110"></td>
         <td><input data-apartment="cleaningFee" type="number" min="0" step="1" value="0"></td>
         <td><input data-apartment="extraFee" type="number" min="0" step="1" value="0"></td>
-        <td><input data-apartment="minPrice" type="number" min="0" step="1" value="65"></td>
-        <td><input data-apartment="maxPrice" type="number" min="0" step="1" value="180"></td>
+        <td class="price-limit"><input data-apartment="minPrice" type="number" min="0" step="1" value="65" title="Prezzo minimo suggeribile"></td>
+        <td class="price-limit"><input data-apartment="maxPrice" type="number" min="0" step="1" value="180" title="Prezzo massimo suggeribile"></td>
         <td><input data-apartment="startBed" type="number" min="0" step="1" value="0"></td>
         <td><input data-apartment="startBath" type="number" min="0" step="1" value="0"></td>
         <td><input data-apartment="startMats" type="number" min="0" step="1" value="0"></td>
@@ -1944,11 +1956,45 @@
     configToggle.addEventListener('click', () => {
       configPanel.classList.toggle('active');
       configToggle.textContent = configPanel.classList.contains('active') ? 'Chiudi configurazione' : 'Configura appartamenti';
+      if (configPanel.classList.contains('active')) {
+        staffPanel.classList.remove('active');
+        staffConfigToggle.textContent = 'Utenti staff';
+      }
     });
     staffConfigToggle.addEventListener('click', () => {
-      configPanel.classList.add('active');
-      configToggle.textContent = 'Chiudi configurazione';
-      staffUsersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      staffPanel.classList.toggle('active');
+      staffConfigToggle.textContent = staffPanel.classList.contains('active') ? 'Chiudi utenti' : 'Utenti staff';
+      if (staffPanel.classList.contains('active')) {
+        configPanel.classList.remove('active');
+        configToggle.textContent = 'Configura appartamenti';
+        staffUsersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+    saveStaffUsers.addEventListener('click', async () => {
+      errorBox.style.display = 'none';
+      noticeBox.style.display = 'none';
+      saveStaffUsers.disabled = true;
+      const previousLabel = saveStaffUsers.textContent;
+      saveStaffUsers.textContent = 'Salvo...';
+      try {
+        serializeStaffUsers();
+        saveStaffUsersArchive();
+        const response = await fetch(new URL('/api/staff-users', window.location.origin).toString(), {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ staffUsers: JSON.parse(staffUsersInput.value || '[]') }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Errore durante il salvataggio utenti.');
+        noticeBox.textContent = 'Utenti salvati.';
+        noticeBox.style.display = 'block';
+      } catch (error) {
+        errorBox.textContent = error.message;
+        errorBox.style.display = 'block';
+      } finally {
+        saveStaffUsers.disabled = false;
+        saveStaffUsers.textContent = previousLabel;
+      }
     });
     moduleButtons.forEach(button => {
       button.addEventListener('click', () => setActiveModule(button.dataset.moduleTarget));
@@ -2117,6 +2163,7 @@
           pricing: JSON.parse(pricingInput.value || '[]'),
         }));
         const deliveriesPayload = step('Preparazione consegne', () => JSON.parse(deliveriesInput.value || '[]'));
+        const staffUsersPayload = step('Preparazione utenti', () => JSON.parse(staffUsersInput.value || '[]'));
         const fileBuffer = await stepAsync('Lettura contenuto file', () => file.arrayBuffer());
         const contentBase64 = step('Codifica file', () => {
           const bytes = new Uint8Array(fileBuffer);
@@ -2129,6 +2176,7 @@
           contentBase64,
           settings: settingsPayload,
           deliveries: deliveriesPayload,
+          staffUsers: staffUsersPayload,
         }));
         const uploadUrl = step('Indirizzo upload', () => new URL('/api/upload', window.location.origin).toString());
         const response = await stepAsync('Invio al server', () => fetch(uploadUrl, {
