@@ -97,7 +97,10 @@ async def sync_staff_users(env, rows, parsed):
         if not email:
             continue
         display_name = str(row.get("code") or email).strip()
-        phone = str(row.get("phone") or "").strip() or None
+        # Cloudflare D1 accepts NULL, but the Python Worker bridge may turn
+        # Python None into JavaScript undefined before binding. Keep optional
+        # text fields as empty strings so uploads do not fail on blank cells.
+        phone = str(row.get("phone") or "").strip()
         role = str(row.get("role") or "pulizie").strip()
         if role not in {"admin", "pulizie", "proprietario"}:
             role = "pulizie"
