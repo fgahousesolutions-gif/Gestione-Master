@@ -1283,7 +1283,7 @@
         const current = new Date(start);
         current.setDate(start.getDate() + index);
         cells.push(`
-          <div class="calendar-day ${current.getMonth() === calendarMonth.getMonth() ? '' : 'outside'}" style="grid-row:${Math.floor(index / 7) + 1}">
+          <div class="calendar-day ${current.getMonth() === calendarMonth.getMonth() ? '' : 'outside'}" style="grid-column:${(index % 7) + 1}; grid-row:${Math.floor(index / 7) + 1}">
             <span class="calendar-day-number">${current.getDate()}</span>
           </div>
         `);
@@ -1334,7 +1334,7 @@
               segment.endsToday ? 'ends-today' : '',
             ].filter(Boolean).join(' ');
             bars.push(`
-              <div class="${classes}" style="grid-column:${segment.startCol} / span ${segment.span}; grid-row:${week + 1}; margin-top:${29 + lane * 32}px">
+              <div class="${classes}" style="grid-column:${segment.startCol} / span ${segment.span}; grid-row:${week + 1}; margin-top:${34 + lane * 32}px">
                 ${esc(segment.label)} <small>${esc(segment.apartment)}</small>
               </div>
             `);
