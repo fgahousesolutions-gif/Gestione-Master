@@ -356,6 +356,8 @@
       padding: 10px 6px;
     }
     .calendar-day {
+      position: relative;
+      z-index: 1;
       min-height: 126px;
       padding: 8px;
       border-right: 1px solid var(--line);
@@ -370,9 +372,19 @@
       color: var(--muted);
     }
     .calendar-day-number {
-      display: block;
+      position: relative;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
       margin-bottom: 7px;
-      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
       font-size: 12px;
       font-weight: 900;
     }
@@ -381,7 +393,7 @@
       align-self: start;
       min-width: 0;
       height: 28px;
-      margin: 29px 4px 0;
+      margin: 34px 4px 0;
       padding: 6px 9px;
       overflow: hidden;
       border: 1px solid #c6dbe8;
@@ -405,6 +417,9 @@
       border-right: 0;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
+    }
+    .calendar-booking.ends-today {
+      margin-right: calc(50% + 4px);
     }
     .calendar-booking small {
       color: var(--muted);
@@ -1278,20 +1293,23 @@
         if (!row.checkIn || !row.checkOut) return;
         const bookingStart = new Date(row.checkIn + 'T00:00:00');
         const bookingEnd = new Date(row.checkOut + 'T00:00:00');
-        if (bookingEnd <= start || bookingStart >= end) return;
+        const visualEnd = new Date(bookingEnd);
+        visualEnd.setDate(visualEnd.getDate() + 1);
+        if (visualEnd <= start || bookingStart >= end) return;
         for (let week = 0; week < 6; week++) {
           const weekStart = new Date(start);
           weekStart.setDate(start.getDate() + week * 7);
           const weekEnd = new Date(weekStart);
           weekEnd.setDate(weekStart.getDate() + 7);
           const segmentStart = bookingStart > weekStart ? bookingStart : weekStart;
-          const segmentEnd = bookingEnd < weekEnd ? bookingEnd : weekEnd;
+          const segmentEnd = visualEnd < weekEnd ? visualEnd : weekEnd;
           if (segmentStart >= segmentEnd) continue;
           weeklySegments[week].push({
             startCol: Math.floor((segmentStart - weekStart) / 86400000) + 1,
             span: Math.floor((segmentEnd - segmentStart) / 86400000),
             continuesLeft: bookingStart < weekStart,
-            continuesRight: bookingEnd > weekEnd,
+            continuesRight: visualEnd > weekEnd,
+            endsToday: bookingEnd >= weekStart && bookingEnd < weekEnd,
             label: `${channelCode(row.ota)} ${row.guestName || 'Ospite'}`,
             apartment: row.apartmentLabel || row.apartment,
           });
@@ -1313,6 +1331,7 @@
               'calendar-booking',
               segment.continuesLeft ? 'continues-left' : '',
               segment.continuesRight ? 'continues-right' : '',
+              segment.endsToday ? 'ends-today' : '',
             ].filter(Boolean).join(' ');
             bars.push(`
               <div class="${classes}" style="grid-column:${segment.startCol} / span ${segment.span}; grid-row:${week + 1}; margin-top:${29 + lane * 32}px">
