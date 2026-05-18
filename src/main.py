@@ -158,7 +158,14 @@ class Default(WorkerEntrypoint):
                 ).bind("current_state").first()
                 if row is None:
                     return as_json({"state": None})
-                return as_json({"state": filter_state(json.loads(str(row.value)), permissions)})
+                state = json.loads(str(row.value))
+                if not state.get("uploadedAt"):
+                    upload = await self.env.DB.prepare(
+                        "SELECT uploaded_at FROM workbook_uploads WHERE is_current = 1 ORDER BY uploaded_at DESC LIMIT 1"
+                    ).first()
+                    if upload is not None:
+                        state["uploadedAt"] = upload.uploaded_at
+                return as_json({"state": filter_state(state, permissions)})
 
             if method == "GET" and "/api/me" in url:
                 user = await current_user(self.env, request)
@@ -210,6 +217,7 @@ class Default(WorkerEntrypoint):
                 await sync_staff_users(self.env, staff_users, parsed)
                 now = datetime.utcnow()
                 uploaded_at = now.isoformat(timespec="seconds")
+                parsed["uploadedAt"] = uploaded_at
                 safe_stamp = now.strftime("%Y%m%dT%H%M%SZ")
                 safe_filename = re.sub(r"[^A-Za-z0-9._-]+", "_", filename).strip("_") or "workbook.xlsx"
                 object_key = f"workbooks/{safe_stamp}-{safe_filename}"
