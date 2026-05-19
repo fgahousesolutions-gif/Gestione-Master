@@ -717,28 +717,32 @@
       flex: 0 0 auto;
     }
     body.staff-mode header,
+    body.staff-mode #globalUpdatedBox,
     body.staff-mode #uploadForm,
     body.staff-mode .control-strip,
     body.staff-mode #configPanel,
     body.staff-mode #noticeBox,
-    body.staff-mode .module-nav,
     body.staff-mode [data-module-view="pricing"],
-    body.staff-mode [data-module-view="calendario"],
-    body.staff-mode [data-module-view="biancheria"],
     body.staff-mode [data-module-view="rendiconto"] {
       display: none !important;
     }
     body.staff-mode main {
       padding-top: 16px;
     }
-    body.staff-mode [data-module-view="pulizie"] {
-      display: block;
+    body.staff-mode .module-nav {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-bottom: 14px;
+    }
+    body.staff-mode .module-button[data-module-target="pricing"],
+    body.staff-mode .module-button[data-module-target="rendiconto"] {
+      display: none !important;
     }
     body.non-admin-mode #uploadForm,
     body.non-admin-mode #configToggle,
     body.non-admin-mode #staffConfigToggle,
     body.non-admin-mode #configPanel,
-    body.non-admin-mode #staffPanel {
+    body.non-admin-mode #staffPanel,
+    body.non-admin-mode #noticeBox {
       display: none !important;
     }
     .grid {
@@ -2087,6 +2091,10 @@
         if (me.role !== 'admin') {
           document.body.classList.add('non-admin-mode');
         }
+        if (me.role === 'pulizie') {
+          document.body.classList.add('staff-mode');
+          setActiveModule('pulizie');
+        }
         if (!Array.isArray(me.modules)) return;
         moduleButtons.forEach(button => {
           const allowed = me.modules.includes(button.dataset.moduleTarget);
@@ -2096,7 +2104,9 @@
           const allowed = me.modules.includes(view.dataset.moduleView);
           if (!allowed) view.style.display = 'none';
         });
-        const firstAllowed = me.modules.find(moduleName => moduleButtons.some(button => button.dataset.moduleTarget === moduleName));
+        const firstAllowed = me.role === 'pulizie'
+          ? 'pulizie'
+          : me.modules.find(moduleName => moduleButtons.some(button => button.dataset.moduleTarget === moduleName));
         if (firstAllowed) setActiveModule(firstAllowed);
       })
       .catch(() => {});
