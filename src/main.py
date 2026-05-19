@@ -1,7 +1,7 @@
 import json
 import base64
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 
 from js import Uint8Array
 from workers import Response, WorkerEntrypoint
@@ -215,8 +215,8 @@ class Default(WorkerEntrypoint):
 
                 parsed = parse_workbook(raw, settings=settings, deliveries=deliveries)
                 await sync_staff_users(self.env, staff_users, parsed)
-                now = datetime.utcnow()
-                uploaded_at = now.isoformat(timespec="seconds")
+                now = datetime.now(timezone.utc)
+                uploaded_at = now.isoformat(timespec="seconds").replace("+00:00", "Z")
                 parsed["uploadedAt"] = uploaded_at
                 safe_stamp = now.strftime("%Y%m%dT%H%M%SZ")
                 safe_filename = re.sub(r"[^A-Za-z0-9._-]+", "_", filename).strip("_") or "workbook.xlsx"
