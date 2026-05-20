@@ -74,8 +74,26 @@ def filter_state(state, permissions):
     if apartments is None:
         return state
 
+    def norm(value):
+        return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
+
+    normalized_apartments = {norm(item) for item in apartments}
+
     def keep_apartment(row):
-        return row.get("apartment") in apartments or row.get("name") in apartments
+        values = [
+            row.get("apartment"),
+            row.get("name"),
+            row.get("apartmentLabel"),
+            row.get("label"),
+        ]
+        normalized_values = {norm(value) for value in values if value}
+        if normalized_values & normalized_apartments:
+            return True
+        return any(
+            allowed and value and (allowed in value or value in allowed)
+            for allowed in normalized_apartments
+            for value in normalized_values
+        )
 
     filtered = dict(state)
     for key in ("apartments", "bookings", "reservations", "deliverySchedule", "pricing", "cleaningSchedule", "critical"):
