@@ -154,11 +154,48 @@
       letter-spacing: .04em;
       font-weight: 800;
     }
-    .delivery-actions {
+    .config-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 12px 16px 0;
+    }
+    .config-tab {
+      background: #e8eef2;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    .config-tab.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+    .delivery-actions,
+    .save-actions {
       grid-column: 1 / -1;
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      align-items: center;
+    }
+    .save-actions {
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid #bfd1df;
+      border-radius: 8px;
+      background: #f4f8fb;
+      justify-content: space-between;
+    }
+    .save-actions span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .save-actions button {
+      min-width: 210px;
+      padding: 13px 18px;
+      font-size: 16px;
+      box-shadow: 0 8px 18px rgba(27, 90, 131, .18);
     }
     .delivery-panel {
       grid-column: 1 / -1;
@@ -217,7 +254,10 @@
       background: #fff;
     }
     .apartment-panel table {
-      min-width: 1420px;
+      min-width: 1040px;
+    }
+    .laundry-panel table {
+      min-width: 1180px;
     }
     .apartment-panel th, .apartment-panel td {
       padding: 6px 8px;
@@ -271,7 +311,7 @@
     button:disabled { opacity: .55; cursor: wait; }
     .module-nav {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 12px;
       margin-bottom: 18px;
     }
@@ -535,6 +575,296 @@
     .pricing-table table {
       min-width: 720px;
     }
+    .messages-layout {
+      display: grid;
+      gap: 14px;
+      max-width: 1480px;
+      margin: 0 auto;
+    }
+    .module-view.messages-layout {
+      display: none;
+    }
+    .module-view.messages-layout.active {
+      display: grid;
+    }
+    .messages-shell {
+      display: grid;
+      gap: 14px;
+    }
+    .messages-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+    .messages-hero h2 {
+      margin: 0 0 4px;
+      padding: 0;
+      border: 0;
+      font-size: 22px;
+    }
+    .messages-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 8px;
+      background: #e8eef2;
+      border-radius: 10px;
+    }
+    .messages-tab {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid transparent;
+    }
+    .messages-tab.active {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--blue);
+    }
+    .messages-intro {
+      margin: 0;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdff;
+      color: var(--muted);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+    .messages-section {
+      display: none;
+    }
+    .messages-section.active {
+      display: block;
+    }
+    .messages-list,
+    .bookings-list,
+    .templates-list {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+    }
+    .message-card,
+    .booking-card,
+    .template-card {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(23, 33, 43, .04);
+    }
+    .message-card.target-message {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(48, 94, 136, .16);
+    }
+    .message-card-head,
+    .booking-card-head,
+    .template-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .message-card h3,
+    .booking-card h3,
+    .template-card h3 {
+      margin: 0 0 4px;
+      font-size: 17px;
+    }
+    .message-card h3 {
+      font-size: 20px;
+      line-height: 1.15;
+    }
+    .message-meta,
+    .booking-meta,
+    .template-meta {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+    .message-type-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin-top: 4px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eef6fb;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .message-facts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .message-fact {
+      display: grid;
+      gap: 2px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+      min-width: 0;
+    }
+    .message-fact span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .message-fact strong {
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+    .message-secondary {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .booking-status-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #e9f2f7;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .status-chip.warn {
+      background: #fff1cc;
+      color: var(--yellow);
+    }
+    .status-chip.ok {
+      background: #e3f5ee;
+      color: var(--green);
+    }
+    .message-editor {
+      display: grid;
+      gap: 10px;
+    }
+    .message-template-row,
+    .manual-message-row,
+    .message-actions,
+    .booking-fields,
+    .template-actions {
+      display: flex;
+      align-items: end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .message-template-row .field {
+      min-width: min(100%, 280px);
+      flex: 1;
+    }
+    .manual-message-row .field {
+      min-width: min(100%, 320px);
+      flex: 1;
+    }
+    .booking-fields .field {
+      min-width: min(100%, 180px);
+      flex: 1;
+    }
+    .booking-fields .notes-field {
+      min-width: min(100%, 260px);
+      flex: 2;
+    }
+    .message-card textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font: inherit;
+      line-height: 1.45;
+      resize: vertical;
+    }
+    .message-card input,
+    .message-card select,
+    .booking-card input,
+    .booking-card select,
+    .template-card input,
+    .template-card select {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      font: inherit;
+      background: #fff;
+    }
+    .messages-toolbar, .template-form {
+      display: flex;
+      align-items: end;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #f9fbfc;
+    }
+    .messages-toolbar .field, .template-form .field {
+      min-width: 140px;
+      flex: 1;
+    }
+    .template-form .template-body {
+      min-width: 320px;
+      flex: 3;
+      flex-basis: 100%;
+    }
+    .template-form .template-body textarea {
+      min-height: 240px;
+      line-height: 1.45;
+    }
+    .messages-table textarea {
+      width: 360px;
+      min-height: 92px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font: inherit;
+      resize: vertical;
+    }
+    .messages-table input, .messages-table select, .template-form input,
+    .template-form select, .template-form textarea {
+      width: 100%;
+      padding: 7px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font: inherit;
+      background: #fff;
+    }
+    .message-actions button {
+      padding: 9px 11px;
+    }
+    .message-status {
+      display: inline-flex;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #e9f2f7;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+    }
     .price-pill {
       display: inline-flex;
       min-width: 62px;
@@ -743,6 +1073,151 @@
     body.non-admin-mode #noticeBox {
       display: none !important;
     }
+    body.messages-active #uploadForm,
+    body.messages-active .control-strip,
+    body.messages-active .module-nav,
+    body.messages-active #configPanel,
+    body.messages-active #staffPanel {
+      display: none !important;
+    }
+    .admin-only {
+      display: none;
+    }
+    body.admin-mode .admin-only {
+      display: block;
+    }
+    body.admin-mode .messages-section.admin-only {
+      display: none;
+    }
+    body.admin-mode .messages-section.admin-only.active {
+      display: block;
+    }
+    .messages-back {
+      width: fit-content;
+      background: #fff;
+      color: var(--blue);
+      border: 1px solid var(--line);
+    }
+    .debug-panel {
+      border: 1px dashed #9aa9b7;
+      background: #fbfdff;
+    }
+    .debug-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+    .debug-build {
+      font-weight: 900;
+      color: var(--blue);
+    }
+    .debug-output {
+      margin: 0;
+      padding: 14px 16px;
+      max-height: 420px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #17212b;
+      background: #f6f8fa;
+      border-top: 1px solid var(--line);
+    }
+    .template-help {
+      flex: 1 1 100%;
+      padding: 10px 12px;
+      border: 1px solid #c6dbe8;
+      border-radius: 8px;
+      background: #e9f2f7;
+      color: var(--blue);
+      font-weight: 800;
+      line-height: 1.4;
+    }
+    @media (max-width: 900px) {
+      main {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .messages-hero {
+        display: grid;
+      }
+      .messages-tabs {
+        width: 100%;
+      }
+      .messages-tab {
+        flex: 1 1 140px;
+      }
+      .messages-toolbar,
+      .template-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
+      }
+      .messages-toolbar .field,
+      .template-form .field,
+      .template-form .template-body {
+        min-width: 0;
+      }
+      .template-form .template-body,
+      .template-help {
+        grid-column: 1 / -1;
+      }
+      .message-card textarea {
+        min-height: 180px;
+      }
+      .message-actions button,
+      .message-template-row button {
+        flex: 1 1 120px;
+      }
+    }
+    @media (max-width: 640px) {
+      header {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .module-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .messages-toolbar,
+      .template-form,
+      .booking-fields,
+      .manual-message-row,
+      .message-template-row {
+        grid-template-columns: minmax(0, 1fr);
+        display: grid;
+      }
+      .messages-list,
+      .bookings-list,
+      .templates-list {
+        padding: 10px;
+      }
+      .message-card,
+      .booking-card,
+      .template-card {
+        padding: 12px;
+      }
+      .message-card-head,
+      .booking-card-head,
+      .template-card-head {
+        display: grid;
+      }
+      .message-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .message-actions button,
+      .booking-fields button,
+      .template-actions button {
+        width: 100%;
+        min-height: 42px;
+      }
+      .debug-output {
+        max-height: 300px;
+      }
+    }
     .grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
@@ -792,8 +1267,9 @@
     }
     .error {
       display: none;
+      position: relative;
       margin-bottom: 16px;
-      padding: 12px 14px;
+      padding: 12px 42px 12px 14px;
       border-radius: 8px;
       border: 1px solid #f1b8b1;
       background: #fff0ee;
@@ -801,8 +1277,9 @@
     }
     .notice {
       display: none;
+      position: relative;
       margin-bottom: 16px;
-      padding: 12px 14px;
+      padding: 12px 42px 12px 14px;
       border-radius: 8px;
       border: 1px solid var(--line);
       background: #fff;
@@ -812,6 +1289,34 @@
     .notice strong {
       display: block;
       margin-bottom: 4px;
+    }
+    .notice.success {
+      border-color: #b9ddcf;
+      background: #f0faf6;
+      color: var(--green);
+    }
+    .notice.info {
+      border-color: #c6dbe8;
+      background: #eef6fb;
+      color: var(--blue);
+    }
+    .feedback-close {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: inherit;
+      font-size: 18px;
+      line-height: 1;
+      opacity: .7;
+    }
+    .feedback-close:hover {
+      opacity: 1;
+      background: rgba(23, 33, 43, .08);
     }
     @media (max-width: 720px) {
       .kpis { grid-template-columns: 1fr; }
@@ -914,20 +1419,19 @@
         <label class="field">Appartamento da consultare <select id="apartmentFilter"><option value="">Tutti gli appartamenti</option></select></label>
       </div>
       <button class="ghost" type="button" id="configToggle">Configura appartamenti</button>
+      <button class="ghost" type="button" id="laundryConfigToggle">Consegne biancheria</button>
       <button class="ghost" type="button" id="staffConfigToggle">Utenti staff</button>
     </div>
     <section class="panel config-panel" id="configPanel">
       <h2>Scheda configurazione appartamenti</h2>
       <div class="settings">
-        <div class="subhead">Appartamenti, pricing base e biancheria partenza</div>
+        <div class="subhead">Appartamenti, pricing base e dati operativi</div>
         <div class="apartment-panel table-wrap">
           <table>
             <thead>
               <tr>
                 <th>ID foglio</th>
                 <th>Nome visibile</th>
-                <th>Indirizzo consegna</th>
-                <th>Biancheria</th>
                 <th>No dom.</th>
                 <th class="num">Prezzo base</th>
                 <th class="num">Prezzo weekend</th>
@@ -935,6 +1439,37 @@
                 <th class="num">Extra</th>
                 <th class="num price-limit">Prezzo<br>minimo</th>
                 <th class="num price-limit">Prezzo<br>massimo</th>
+                <th>Col. ospiti</th>
+                <th>Col. letto extra</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="apartmentsRegistry"></tbody>
+          </table>
+        </div>
+        <div class="subhead">Parametri default</div>
+        <label class="field">Ospiti per kit letto <input name="bedGuests" form="uploadForm" type="number" min="1" step="1" value="2"></label>
+        <label class="field">Ospiti per kit bagno <input name="bathGuests" form="uploadForm" type="number" min="1" step="1" value="1"></label>
+        <label class="field">Tappetini standard <input name="matsStandard" form="uploadForm" type="number" min="0" step="1" value="1"></label>
+        <label class="field">Tappetini extra <input name="matsExtra" form="uploadForm" type="number" min="0" step="1" value="0"></label>
+        <div class="save-actions">
+          <span>Salva le configurazioni e ricalcola dashboard, pricing, pulizie e biancheria.</span>
+          <button type="submit" form="uploadForm" id="refreshButton">Aggiorna calcoli</button>
+        </div>
+      </div>
+    </section>
+    <section class="panel config-panel" id="laundryPanel">
+      <h2>Scheda consegne biancheria</h2>
+      <div class="settings">
+        <div class="subhead">Impostazioni biancheria appartamenti</div>
+        <div class="apartment-panel laundry-panel table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID foglio</th>
+                <th>Nome visibile</th>
+                <th>Indirizzo consegna</th>
+                <th>Biancheria</th>
                 <th class="num">Letto start</th>
                 <th class="num">Bagno start</th>
                 <th class="num">Tappeti start</th>
@@ -944,22 +1479,11 @@
                 <th class="num">Osp/bagno</th>
                 <th class="num">Tapp. std</th>
                 <th class="num">Tapp. extra</th>
-                <th>Col. ospiti</th>
-                <th>Col. letto extra</th>
-                <th></th>
               </tr>
             </thead>
-            <tbody id="apartmentsRegistry"></tbody>
+            <tbody id="laundryRegistry"></tbody>
           </table>
         </div>
-        <div class="delivery-actions">
-          <button type="submit" form="uploadForm" id="refreshButton">Aggiorna calcoli</button>
-        </div>
-        <div class="subhead">Parametri default</div>
-        <label class="field">Ospiti per kit letto <input name="bedGuests" form="uploadForm" type="number" min="1" step="1" value="2"></label>
-        <label class="field">Ospiti per kit bagno <input name="bathGuests" form="uploadForm" type="number" min="1" step="1" value="1"></label>
-        <label class="field">Tappetini standard <input name="matsStandard" form="uploadForm" type="number" min="0" step="1" value="1"></label>
-        <label class="field">Tappetini extra <input name="matsExtra" form="uploadForm" type="number" min="0" step="1" value="0"></label>
         <div class="subhead">Consegne biancheria</div>
         <div class="delivery-panel table-wrap">
           <table>
@@ -982,6 +1506,10 @@
           <button class="ghost" type="button" id="addDelivery">Aggiungi consegna</button>
           <button class="ghost" type="button" id="exportDeliveries">Scarica CSV consegne</button>
           <button class="ghost" type="button" id="importDeliveries">Importa archivio</button>
+        </div>
+        <div class="save-actions">
+          <span>Salva consegne e impostazioni biancheria usando il filtro appartamento corrente.</span>
+          <button type="submit" form="uploadForm" id="refreshLaundryButton">Aggiorna calcoli</button>
         </div>
       </div>
     </section>
@@ -1018,6 +1546,7 @@
     <section class="module-nav" aria-label="Moduli gestione">
       <button class="module-button active" type="button" data-module-target="pricing"><strong>Pricing</strong><span>Prezzi suggeriti giorno per giorno</span></button>
       <button class="module-button" type="button" data-module-target="calendario"><strong>Calendario</strong><span>Check-in e check-out da XLS</span></button>
+      <button class="module-button" type="button" data-module-target="messaggi"><strong>Messaggi</strong><span>Ospiti e WhatsApp</span></button>
       <button class="module-button" type="button" data-module-target="biancheria"><strong>Biancheria</strong><span>Scorte, consegne e consumi</span></button>
       <button class="module-button" type="button" data-module-target="pulizie"><strong>Pulizie</strong><span>Bozza planning operatori</span></button>
       <button class="module-button" type="button" data-module-target="rendiconto"><strong>Rendiconto</strong><span>Bozza entrate e uscite proprietari</span></button>
@@ -1045,6 +1574,123 @@
       </div>
       <div class="calendar-grid" id="calendarGrid">
         <div class="empty">Carica un file Excel per vedere il calendario prenotazioni.</div>
+      </div>
+    </section>
+    <section class="module-view messages-layout" data-module-view="messaggi">
+      <div class="messages-shell">
+        <div class="messages-hero">
+          <div>
+            <button class="messages-back" type="button" id="backToDashboard">← Torna alla dashboard</button>
+            <h2>Messaggi Ospiti / WhatsApp</h2>
+            <p>Area operativa per completare contatti, preparare messaggi e inviarli senza rincorrere colonne.</p>
+          </div>
+          <div class="messages-tabs" role="tablist" aria-label="Sezioni messaggi">
+            <button class="messages-tab active" type="button" data-messages-tab="prenotazioni">Arrivi da gestire</button>
+            <button class="messages-tab" type="button" data-messages-tab="operativo">Messaggi pronti</button>
+            <button class="messages-tab" type="button" data-messages-tab="template">Template</button>
+            <button class="messages-tab admin-only" type="button" data-messages-tab="debug">Debug</button>
+          </div>
+        </div>
+      <section class="panel messages-section" data-messages-section="operativo">
+        <h2>Messaggi pronti</h2>
+        <p class="messages-intro">Qui trovi i messaggi già generati e programmati. Puoi scegliere un template, modificare il testo, copiarlo, aprire WhatsApp e segnare l’invio.</p>
+        <div class="messages-toolbar">
+          <label class="field">Appartamento
+            <select id="messagesApartmentFilter"></select>
+          </label>
+          <label class="field">Messaggi programmati entro
+            <select id="messagesPeriodFilter">
+              <option value="7">7 giorni</option>
+              <option value="14" selected>14 giorni</option>
+              <option value="30">30 giorni</option>
+            </select>
+          </label>
+          <label class="field">Stato
+            <select id="messageStatusFilter">
+              <option value="">Tutti</option>
+              <option value="da_inviare">Da inviare</option>
+              <option value="posticipato">Posticipati</option>
+              <option value="inviato">Inviati</option>
+            </select>
+          </label>
+          <button type="button" id="syncGuestMessages">Genera messaggi mancanti</button>
+          <button class="ghost" type="button" id="refreshGuestMessages">Aggiorna dashboard</button>
+          <button class="ghost admin-only" type="button" id="refreshMessageContacts">Aggiorna contatti messaggi</button>
+          <button class="ghost admin-only" type="button" id="cleanupDuplicateMessages">Pulisci doppioni non inviati</button>
+          <label class="admin-only"><input type="checkbox" id="showDuplicateMessages"> Mostra doppioni</label>
+        </div>
+        <div class="messages-list" id="guestMessagesTable"><div class="empty">Apri il modulo per caricare i messaggi.</div></div>
+      </section>
+      <section class="panel messages-section active" data-messages-section="prenotazioni">
+        <h2>Arrivi da gestire <span id="guestBookingsCount"></span></h2>
+        <p class="messages-intro">Qui trovi gli ospiti in arrivo nel periodo selezionato. Completa telefono, lingua e note prima di preparare o inviare i messaggi WhatsApp.</p>
+        <div class="messages-toolbar">
+          <label class="field">Appartamento
+            <select id="bookingsApartmentFilter"></select>
+          </label>
+          <label class="field">Check-in entro
+            <select id="bookingsPeriodFilter">
+              <option value="7">7 giorni</option>
+              <option value="14" selected>14 giorni</option>
+              <option value="30">30 giorni</option>
+            </select>
+          </label>
+        </div>
+        <div class="bookings-list" id="guestBookingsTable"><div class="empty">Nessuna prenotazione caricata.</div></div>
+      </section>
+      <section class="panel messages-section" data-messages-section="template">
+        <h2>Template messaggi</h2>
+        <p class="messages-intro">Qui gestisci i testi standard usati per generare i messaggi. Puoi creare template globali o specifici per appartamento.</p>
+        <form class="template-form" id="messageTemplateForm">
+          <label class="field">Appartamento <select name="apartmentId" id="templateApartmentSelect"><option value="">Globale - tutti gli appartamenti</option></select></label>
+          <label class="field">Tipo <select name="messageType" id="templateMessageTypeSelect" required>
+            <option value="primo_contatto_guida">Primo contatto + guida — primo_contatto_guida</option>
+            <option value="istruzioni_checkin_codici">Codici accesso e chiavi — istruzioni_checkin_codici</option>
+            <option value="controllo_soggiorno_pagamento">Controllo soggiorno + pagamento — controllo_soggiorno_pagamento</option>
+            <option value="istruzioni_checkout">Check-out — istruzioni_checkout</option>
+            <option value="richiesta_documenti">Documenti ospiti — richiesta_documenti</option>
+            <option value="tassa_soggiorno">Tassa soggiorno — tassa_soggiorno</option>
+            <option value="richiesta_recensione">Recensione — richiesta_recensione</option>
+            <option value="messaggio_generico">Messaggio generico — messaggio_generico</option>
+          </select></label>
+          <label class="field">Lingua <select name="language" required>
+            <option value="it">Italiano</option>
+            <option value="en">Inglese</option>
+            <option value="de">Tedesco</option>
+            <option value="fr">Francese</option>
+            <option value="es">Spagnolo</option>
+          </select></label>
+          <label class="field">Titolo <input name="title" required></label>
+          <label class="field">Genera automaticamente <select name="autoGenerate" id="templateAutoGenerateSelect"><option value="0">No - manuale</option><option value="1">Si - automatico</option></select></label>
+          <label class="field">Programma rispetto a <select name="scheduleReference" id="templateScheduleReferenceSelect"><option value="checkin">Check-in</option><option value="checkout">Check-out</option></select></label>
+          <label class="field">Giorni rispetto evento <input name="sendOffsetDays" type="number" value="-2"></label>
+          <label class="field">Ora <input name="sendTime" type="time" value="10:00"></label>
+          <label class="field">Stato <select name="isActive" id="templateActiveSelect"><option value="1">Attivo</option><option value="0">Disattivato</option></select></label>
+          <label class="field template-body">Testo <textarea name="body" required placeholder="Ciao {{nome_ospite}}..."></textarea></label>
+          <small class="template-help">Variabili disponibili: [nome_ospite], [appartamento], [indirizzo], [data_checkin], [ora_checkin], [data_checkout], [ora_checkout], [numero_ospiti], [codice_prenotazione], [ota]</small>
+          <button type="submit" id="saveTemplateButton">Aggiungi template</button>
+          <button class="ghost" type="button" id="cancelTemplateEdit" style="display:none;">Annulla modifica</button>
+        </form>
+        <div class="messages-toolbar">
+          <label class="field">Filtra per appartamento
+            <select id="templateApartmentFilter">
+              <option value="">Tutti i template</option>
+              <option value="__global__">Globali</option>
+            </select>
+          </label>
+          <label><input type="checkbox" id="showInactiveTemplates"> Mostra anche disattivati</label>
+        </div>
+        <div class="templates-list" id="messageTemplatesTable"><div class="empty">Nessun template caricato.</div></div>
+      </section>
+      <section class="panel debug-panel admin-only messages-section" data-messages-section="debug" id="messagesDebugPanel">
+        <h2>Debug API Messaggi</h2>
+        <p class="messages-intro">Area tecnica per verificare le API del modulo Messaggi. Visibile solo admin.</p>
+        <div class="debug-actions">
+          <span class="debug-build">Frontend messaggi build: <span id="messagesDebugBuild">debug-2026-06-05-01</span></span>
+          <button class="ghost" type="button" id="runMessagesDebug">Esegui debug API</button>
+        </div>
+        <pre class="debug-output" id="messagesDebugOutput">Debug non ancora eseguito.</pre>
+      </section>
       </div>
     </section>
     <section class="module-view" data-module-view="biancheria">
@@ -1179,18 +1825,22 @@
     const staffUsersBox = document.getElementById('staffUsers');
     const staffUsersInput = document.getElementById('staffUsersInput');
     const apartmentsRegistry = document.getElementById('apartmentsRegistry');
+    const laundryRegistry = document.getElementById('laundryRegistry');
     const apartmentsInput = document.getElementById('apartmentsInput');
     const pricingInput = document.getElementById('pricingInput');
     const pricingCards = document.getElementById('pricingCards');
     const addApartment = document.getElementById('addApartment');
     const apartmentFilter = document.getElementById('apartmentFilter');
     const configToggle = document.getElementById('configToggle');
+    const laundryConfigToggle = document.getElementById('laundryConfigToggle');
     const staffConfigToggle = document.getElementById('staffConfigToggle');
     const staffUsersSection = document.getElementById('staffUsersSection');
     const configPanel = document.getElementById('configPanel');
+    const laundryPanel = document.getElementById('laundryPanel');
     const staffPanel = document.getElementById('staffPanel');
     const addDelivery = document.getElementById('addDelivery');
     const refreshButton = document.getElementById('refreshButton');
+    const refreshLaundryButton = document.getElementById('refreshLaundryButton');
     const exportDeliveries = document.getElementById('exportDeliveries');
     const importDeliveries = document.getElementById('importDeliveries');
     const importDeliveriesFile = document.getElementById('importDeliveriesFile');
@@ -1203,12 +1853,43 @@
     const emailSupplier = document.getElementById('emailSupplier');
     const moduleButtons = [...document.querySelectorAll('[data-module-target]')];
     const moduleViews = [...document.querySelectorAll('[data-module-view]')];
+    const backToDashboard = document.getElementById('backToDashboard');
     const cleaningUpdatedBox = document.getElementById('cleaningUpdatedBox');
     const globalUpdatedBox = document.getElementById('globalUpdatedBox');
     const calendarGrid = document.getElementById('calendarGrid');
     const calendarMonthLabel = document.getElementById('calendarMonthLabel');
     const calendarPrev = document.getElementById('calendarPrev');
     const calendarNext = document.getElementById('calendarNext');
+    const guestMessagesTable = document.getElementById('guestMessagesTable');
+    const guestBookingsTable = document.getElementById('guestBookingsTable');
+    const guestBookingsCount = document.getElementById('guestBookingsCount');
+    const messageTemplatesTable = document.getElementById('messageTemplatesTable');
+    const messagesApartmentFilter = document.getElementById('messagesApartmentFilter');
+    const bookingsApartmentFilter = document.getElementById('bookingsApartmentFilter');
+    const messagesPeriodFilter = document.getElementById('messagesPeriodFilter');
+    const bookingsPeriodFilter = document.getElementById('bookingsPeriodFilter');
+    const messageStatusFilter = document.getElementById('messageStatusFilter');
+    const templateApartmentSelect = document.getElementById('templateApartmentSelect');
+    const templateApartmentFilter = document.getElementById('templateApartmentFilter');
+    const templateMessageTypeSelect = document.getElementById('templateMessageTypeSelect');
+    const syncGuestMessages = document.getElementById('syncGuestMessages');
+    const refreshGuestMessages = document.getElementById('refreshGuestMessages');
+    const refreshMessageContacts = document.getElementById('refreshMessageContacts');
+    const cleanupDuplicateMessages = document.getElementById('cleanupDuplicateMessages');
+    const showDuplicateMessages = document.getElementById('showDuplicateMessages');
+    const messageTemplateForm = document.getElementById('messageTemplateForm');
+    const templateActiveSelect = document.getElementById('templateActiveSelect');
+    const templateAutoGenerateSelect = document.getElementById('templateAutoGenerateSelect');
+    const templateScheduleReferenceSelect = document.getElementById('templateScheduleReferenceSelect');
+    const saveTemplateButton = document.getElementById('saveTemplateButton');
+    const cancelTemplateEdit = document.getElementById('cancelTemplateEdit');
+    const showInactiveTemplates = document.getElementById('showInactiveTemplates');
+    const messagesDebugBuild = document.getElementById('messagesDebugBuild');
+    const runMessagesDebug = document.getElementById('runMessagesDebug');
+    const messagesDebugOutput = document.getElementById('messagesDebugOutput');
+    const messagesTabs = [...document.querySelectorAll('[data-messages-tab]')];
+    const messagesSections = [...document.querySelectorAll('[data-messages-section]')];
+    const messagesFrontendBuild = 'messages-sync-insert-strict-2026-06-09-01';
     const fmt = new Intl.DateTimeFormat('it-IT');
     const fmtDateTime = new Intl.DateTimeFormat('it-IT', { dateStyle: 'short', timeStyle: 'short' });
     const fmtMonth = new Intl.DateTimeFormat('it-IT', { month: 'long', year: 'numeric' });
@@ -1220,8 +1901,34 @@
     const staffMode = params.get('staff') === '1' || params.get('view') === 'pulizie';
     let lastData = null;
     let lastSchedule = [];
+    let guestMessages = [];
+    let guestBookings = [];
+    let guestTemplates = [];
+    let messagesLoaded = false;
+    let currentUserInfo = null;
+    let editingTemplateId = null;
+    let targetMessageId = '';
     let calendarMonth = new Date();
     calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1);
+    if (messagesDebugBuild) messagesDebugBuild.textContent = messagesFrontendBuild;
+    [errorBox, noticeBox].forEach(box => {
+      box?.addEventListener('click', async event => {
+        if (event.target.closest('[data-dismiss-feedback]')) clearMessagesFeedback();
+        const openButton = event.target.closest('[data-open-existing-message]');
+        if (openButton) {
+          let message = guestMessages.find(item => String(item.id) === String(openButton.dataset.openExistingMessage));
+          if (!message) {
+            message = await fetchGuestMessageById(openButton.dataset.openExistingMessage);
+          }
+          if (message) {
+            clearMessagesFeedback();
+            openMessageInOperativo(message);
+          } else {
+            showMessagesError('Messaggio esistente trovato in DB ma non caricato nella lista locale. Aggiorna dashboard e riprova.');
+          }
+        }
+      });
+    });
 
     function esc(value) {
       return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
@@ -1297,12 +2004,898 @@
     }
 
     function setActiveModule(moduleName) {
+      document.body.classList.toggle('messages-active', moduleName === 'messaggi');
       moduleButtons.forEach(button => {
         button.classList.toggle('active', button.dataset.moduleTarget === moduleName);
       });
       moduleViews.forEach(view => {
         view.classList.toggle('active', view.dataset.moduleView === moduleName);
       });
+      if (moduleName === 'messaggi') loadMessagesModule();
+    }
+
+    function setActiveMessagesTab(tabName) {
+      messagesTabs.forEach(button => {
+        button.classList.toggle('active', button.dataset.messagesTab === tabName);
+      });
+      messagesSections.forEach(section => {
+        section.classList.toggle('active', section.dataset.messagesSection === tabName);
+      });
+    }
+
+    async function messagesApi(path, options = {}) {
+      const { timeoutMs = 15000, ...fetchOptions } = options;
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(path, {
+          ...fetchOptions,
+          signal: controller.signal,
+          credentials: 'include',
+          headers: { 'content-type': 'application/json', ...(fetchOptions.headers || {}) },
+        });
+        const text = await response.text();
+        let payload = {};
+        try {
+          payload = text ? JSON.parse(text) : {};
+        } catch (parseError) {
+          if (text.includes('<!DOCTYPE html') || text.includes('<html')) {
+            throw new Error(`Risposta HTML da ${path}: sessione Cloudflare Access o route API non valida. Ricarica la pagina, rifai accesso e riprova.`);
+          }
+          throw new Error(`Risposta non JSON da ${path}: ${text.slice(0, 160) || response.status}`);
+        }
+        if (!response.ok) throw new Error(payload.error || `Errore ${response.status} su ${path}.`);
+        return payload;
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          throw new Error(`Timeout chiamata ${path}. Riprova tra poco.`);
+        }
+        throw error;
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    function normalizeDebugPhone(value) {
+      return String(value || '').replace(/\D+/g, '');
+    }
+
+    function replaceLoneSurrogates(input) {
+      const str = String(input ?? '');
+      let output = '';
+
+      for (let index = 0; index < str.length; index += 1) {
+        const code = str.charCodeAt(index);
+
+        if (code >= 0xD800 && code <= 0xDBFF) {
+          const next = str.charCodeAt(index + 1);
+          if (next >= 0xDC00 && next <= 0xDFFF) {
+            output += str[index] + str[index + 1];
+            index += 1;
+          } else {
+            output += '\uFFFD';
+          }
+          continue;
+        }
+
+        if (code >= 0xDC00 && code <= 0xDFFF) {
+          output += '\uFFFD';
+          continue;
+        }
+
+        output += str[index];
+      }
+
+      return output;
+    }
+
+    function encodeWhatsAppText(text) {
+      const normalized = String(text ?? '')
+        .replace(/\r\n?/g, '\n')
+        .normalize('NFC');
+
+      try {
+        return encodeURIComponent(normalized);
+      } catch (error) {
+        return encodeURIComponent(replaceLoneSurrogates(normalized));
+      }
+    }
+
+    function openWhatsAppMessage(phone, text) {
+      const cleanPhone = normalizeDebugPhone(phone);
+      if (!cleanPhone) return;
+      const url = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeWhatsAppText(text)}`;
+      window.open(url, '_blank', 'noopener');
+    }
+
+    function appendMessagesDebug(title, data) {
+      if (!messagesDebugOutput) return;
+      const text = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+      const prefix = messagesDebugOutput.textContent === 'Debug non ancora eseguito.' ? '' : `${messagesDebugOutput.textContent}\n\n`;
+      messagesDebugOutput.textContent = `${prefix}=== ${title} ===\n${text}`;
+    }
+
+    function debugRecordCount(path, payload) {
+      if (!payload || typeof payload !== 'object') return 0;
+      if (path.endsWith('/api/messages/bookings')) return Array.isArray(payload.bookings) ? payload.bookings.length : 0;
+      if (path.endsWith('/api/message-templates')) return Array.isArray(payload.templates) ? payload.templates.length : 0;
+      if (path.endsWith('/api/messages')) return Array.isArray(payload.messages) ? payload.messages.length : 0;
+      return 0;
+    }
+
+    async function debugFetch(path, options = {}) {
+      const { timeoutMs = 15000, ...fetchOptions } = options;
+      const controller = new AbortController();
+      const startedAt = Date.now();
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(path, {
+          ...fetchOptions,
+          signal: controller.signal,
+          headers: { 'content-type': 'application/json', ...(fetchOptions.headers || {}) },
+        });
+        const contentType = response.headers.get('content-type') || '';
+        const text = await response.text();
+        let jsonValid = false;
+        let payload = null;
+        let error = '';
+        try {
+          payload = text ? JSON.parse(text) : {};
+          jsonValid = true;
+        } catch (parseError) {
+          error = `JSON non valido: ${parseError.message}`;
+        }
+        return {
+          url: path,
+          status: response.status,
+          ok: response.ok,
+          redirected: response.redirected,
+          finalUrl: response.url,
+          contentType,
+          jsonValido: jsonValid,
+          recordRicevuti: jsonValid ? debugRecordCount(path, payload) : 0,
+          errore: jsonValid ? (payload.error || '') : error,
+          rispostaJson: jsonValid ? payload : undefined,
+          rispostaTestualePrimi300: jsonValid ? undefined : text.slice(0, 300),
+          durataMs: Date.now() - startedAt,
+        };
+      } catch (error) {
+        return {
+          url: path,
+          status: null,
+          ok: false,
+          contentType: '',
+          jsonValido: false,
+          recordRicevuti: 0,
+          errore: error.name === 'AbortError' ? 'Timeout dopo 15 secondi' : error.message,
+          durataMs: Date.now() - startedAt,
+        };
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    async function runMessagesApiDebug() {
+      if (!messagesDebugOutput) return;
+      const endpoints = [
+        '/api/messages/debug-backend',
+        '/api/messages/bookings',
+        '/api/message-templates',
+        '/api/messages',
+      ];
+      messagesDebugOutput.textContent = `Frontend messaggi build: ${messagesFrontendBuild}\nUtente corrente: ${JSON.stringify(currentUserInfo || {}, null, 2)}\nAvvio debug API...`;
+      if (runMessagesDebug) runMessagesDebug.disabled = true;
+      try {
+        for (const endpoint of endpoints) {
+          const result = await debugFetch(endpoint);
+          appendMessagesDebug(endpoint, result);
+        }
+      } finally {
+        if (runMessagesDebug) runMessagesDebug.disabled = false;
+      }
+    }
+
+    function clearMessagesFeedback() {
+      errorBox.style.display = 'none';
+      errorBox.textContent = '';
+      noticeBox.style.display = 'none';
+      noticeBox.textContent = '';
+      noticeBox.classList.remove('success', 'info');
+    }
+
+    function feedbackHtml(message, action = null) {
+      const actionHtml = action ? ` <button class="ghost tiny" type="button" ${action.attr}>${esc(action.label)}</button>` : '';
+      return `${esc(message)}${actionHtml}<button class="feedback-close" type="button" data-dismiss-feedback aria-label="Chiudi messaggio">×</button>`;
+    }
+
+    function showMessagesError(message) {
+      noticeBox.style.display = 'none';
+      noticeBox.textContent = '';
+      errorBox.innerHTML = feedbackHtml(message);
+      errorBox.style.display = 'block';
+    }
+
+    function showMessagesNotice(message, kind = 'success', action = null) {
+      errorBox.style.display = 'none';
+      errorBox.textContent = '';
+      noticeBox.classList.remove('success', 'info');
+      noticeBox.classList.add(kind);
+      noticeBox.innerHTML = feedbackHtml(message, action);
+      noticeBox.style.display = 'block';
+    }
+
+    function syncSummaryText(payload) {
+      const base = `Sincronizzazione completata: ${payload.created || 0} nuovi messaggi, ${payload.overdueCreated || 0} arretrati. Esistenti riallineati: ${payload.updatedExisting || 0}. Analizzate: ${payload.analyzed || 0}. Gia esistenti: ${payload.existing || 0}. Template non trovati: ${payload.skippedNoTemplate || 0}. Errori inserimento: ${payload.insertErrors || 0}.`;
+      const selected = messagesApartmentFilter?.value || '';
+      const apartmentSummary = selected ? payload.apartments?.[selected] : null;
+      if (!apartmentSummary) return base;
+      return `${base} ${selected}: analizzate ${apartmentSummary.analyzed || 0}, creati ${apartmentSummary.created || 0}, esistenti ${apartmentSummary.existing || 0}, template mancanti ${apartmentSummary.skippedNoTemplate || 0}, errori inserimento ${apartmentSummary.insertErrors || 0}.`;
+    }
+
+    function messageApartmentRows() {
+      const rows = lastData?.workbookSheets || lastData?.apartments || [];
+      const apartments = [];
+      const seen = new Set();
+      rows.forEach(row => {
+        const id = row.name || row.apartment || '';
+        if (!id || seen.has(id)) return;
+        seen.add(id);
+        apartments.push({ id, label: row.label || row.apartmentLabel || id });
+      });
+      guestTemplates.forEach(template => {
+        const id = template.apartmentId || '';
+        if (!id || seen.has(id)) return;
+        seen.add(id);
+        apartments.push({ id, label: id });
+      });
+      return apartments;
+    }
+
+    function templateApartmentOptions() {
+      const rows = messageApartmentRows();
+      const selected = templateApartmentSelect.value || apartmentFilter.value || '';
+      templateApartmentSelect.innerHTML = '<option value="">Globale - tutti gli appartamenti</option>' + rows.map(row =>
+        `<option value="${esc(row.id)}">${esc(row.label || row.id)} (${esc(row.id)})</option>`
+      ).join('');
+      templateApartmentSelect.value = [...templateApartmentSelect.options].some(option => option.value === selected) ? selected : '';
+    }
+
+    function syncTemplateApartmentFilter() {
+      if (!templateApartmentFilter) return;
+      const selected = templateApartmentFilter.value || '';
+      const rows = messageApartmentRows();
+      templateApartmentFilter.innerHTML = [
+        '<option value="">Tutti i template</option>',
+        '<option value="__global__">Globali</option>',
+        ...rows.map(row => `<option value="${esc(row.id)}">${esc(row.label || row.id)}</option>`),
+      ].join('');
+      templateApartmentFilter.value = [...templateApartmentFilter.options].some(option => option.value === selected) ? selected : '';
+    }
+
+    function messagesSelectedApartment(kind = 'messages') {
+      const select = kind === 'bookings' ? bookingsApartmentFilter : messagesApartmentFilter;
+      return select?.value || apartmentFilter.value || '';
+    }
+
+    function messagesSelectedPeriod(kind = 'messages') {
+      const select = kind === 'bookings' ? bookingsPeriodFilter : messagesPeriodFilter;
+      return Number(select?.value || 14);
+    }
+
+    function dateWithinMessagePeriod(value, days) {
+      if (!value) return false;
+      const datePart = String(value).slice(0, 10);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const max = new Date(today);
+      max.setDate(max.getDate() + Number(days || 14));
+      const candidate = new Date(`${datePart}T00:00:00`);
+      return !Number.isNaN(candidate.getTime()) && candidate >= today && candidate <= max;
+    }
+
+    function parseLocalDateStart(value) {
+      if (!value) return null;
+      const raw = String(value).trim().slice(0, 10);
+      let year = '';
+      let month = '';
+      let day = '';
+      if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+        [year, month, day] = raw.split('-');
+      } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(raw)) {
+        [day, month, year] = raw.split('/');
+      } else {
+        const parsed = new Date(value);
+        if (Number.isNaN(parsed.getTime())) return null;
+        return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+      }
+      const date = new Date(Number(year), Number(month) - 1, Number(day));
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function dateWithinFutureCheckinPeriod(value, days) {
+      const candidate = parseLocalDateStart(value);
+      if (!candidate) return false;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const max = new Date(today);
+      max.setDate(max.getDate() + Number(days || 14));
+      return candidate >= today && candidate <= max;
+    }
+
+    function isOverdueMessage(row) {
+      if (!row || row.status === 'inviato') return false;
+      const value = row.postponedUntil || row.scheduledAt;
+      if (!value) return false;
+      const datePart = String(value).slice(0, 10);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const candidate = new Date(`${datePart}T00:00:00`);
+      return !Number.isNaN(candidate.getTime()) && candidate < today;
+    }
+
+    function messageWithinDisplayPeriod(row, days) {
+      return isOverdueMessage(row) || dateWithinMessagePeriod(row.postponedUntil || row.scheduledAt, days);
+    }
+
+    function messageFreshnessValue(row) {
+      const timestamp = Date.parse(row.updatedAt || row.createdAt || row.scheduledAt || '');
+      if (!Number.isNaN(timestamp)) return timestamp;
+      const idValue = Number(row.id || 0);
+      return Number.isNaN(idValue) ? 0 : idValue;
+    }
+
+    function compareDuplicateMessages(a, b) {
+      const aLanguage = normalizeMessageLanguage(a.contactLanguage || a.language);
+      const bLanguage = normalizeMessageLanguage(b.contactLanguage || b.language);
+      const aScore = normalizeMessageLanguage(a.language) === aLanguage ? 1 : 0;
+      const bScore = normalizeMessageLanguage(b.language) === bLanguage ? 1 : 0;
+      if (aScore !== bScore) return aScore - bScore;
+      const freshnessDiff = messageFreshnessValue(a) - messageFreshnessValue(b);
+      if (freshnessDiff !== 0) return freshnessDiff;
+      return Number(a.id || 0) - Number(b.id || 0);
+    }
+
+    function dedupeVisibleMessages(rows) {
+      if (showDuplicateMessages?.checked) {
+        return { rows, hiddenCounts: new Map(), hiddenTotal: 0 };
+      }
+      const groups = new Map();
+      const passthrough = [];
+      rows.forEach(row => {
+        if (row.status === 'inviato' || !row.bookingKey || !row.messageType) {
+          passthrough.push(row);
+          return;
+        }
+        const key = `${row.bookingKey}||${row.messageType}`;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(row);
+      });
+      const hiddenCounts = new Map();
+      let hiddenTotal = 0;
+      const visibleGrouped = [];
+      groups.forEach(group => {
+        if (group.length === 1) {
+          visibleGrouped.push(group[0]);
+          return;
+        }
+        const best = [...group].sort(compareDuplicateMessages).pop();
+        visibleGrouped.push(best);
+        const hidden = group.length - 1;
+        hiddenCounts.set(String(best.id), hidden);
+        hiddenTotal += hidden;
+      });
+      return { rows: [...passthrough, ...visibleGrouped], hiddenCounts, hiddenTotal };
+    }
+
+    const allowedMessageLanguages = new Set(['it', 'en', 'de', 'fr', 'es']);
+    function normalizeMessageLanguage(value) {
+      const language = String(value || '').trim().toLowerCase();
+      return allowedMessageLanguages.has(language) ? language : 'it';
+    }
+
+    function languageLabel(value) {
+      const labels = { it: 'Italiano', en: 'Inglese', de: 'Tedesco', fr: 'Francese', es: 'Spagnolo' };
+      const language = normalizeMessageLanguage(value);
+      return labels[language] || labels.it;
+    }
+
+    function languageOptions(selectedValue) {
+      const selected = normalizeMessageLanguage(selectedValue);
+      return [
+        ['it', 'Italiano'],
+        ['en', 'Inglese'],
+        ['de', 'Tedesco'],
+        ['fr', 'Francese'],
+        ['es', 'Spagnolo'],
+      ].map(([value, label]) => `<option value="${value}"${value === selected ? ' selected' : ''}>${label}</option>`).join('');
+    }
+
+    function normalizeScheduleReference(value) {
+      return String(value || '').toLowerCase() === 'checkout' ? 'checkout' : 'checkin';
+    }
+
+    function scheduleReferenceLabel(value) {
+      return normalizeScheduleReference(value) === 'checkout' ? 'Check-out' : 'Check-in';
+    }
+
+    const messageTypeLabels = {
+      primo_contatto_guida: 'Primo contatto + guida',
+      pre_arrivo_guida: 'Primo contatto + guida',
+      istruzioni_checkin_codici: 'Codici accesso e chiavi',
+      checkin_codici: 'Codici accesso e chiavi',
+      controllo_soggiorno_pagamento: 'Controllo soggiorno + pagamento',
+      istruzioni_checkout: 'Check-out',
+      checkout: 'Check-out',
+      richiesta_documenti: 'Documenti ospiti',
+      tassa_soggiorno: 'Tassa soggiorno',
+      richiesta_recensione: 'Recensione',
+      recensione: 'Recensione',
+      messaggio_generico: 'Messaggio generico',
+    };
+
+    const standardMessageTypes = new Set([
+      'primo_contatto_guida',
+      'istruzioni_checkin_codici',
+      'controllo_soggiorno_pagamento',
+      'istruzioni_checkout',
+      'richiesta_documenti',
+      'tassa_soggiorno',
+      'richiesta_recensione',
+      'messaggio_generico',
+    ]);
+
+    function messageTypeLabel(value) {
+      const type = String(value || '').trim();
+      return messageTypeLabels[type] || type || 'Messaggio';
+    }
+
+    function ensureTemplateMessageTypeOption(value) {
+      const type = String(value || '').trim();
+      if (!templateMessageTypeSelect || !type) return;
+      const exists = [...templateMessageTypeSelect.options].some(option => option.value === type);
+      if (!exists) {
+        const option = new Option(`Tipo esistente: ${type}`, type);
+        option.dataset.existingType = '1';
+        templateMessageTypeSelect.add(option);
+      }
+    }
+
+    function bookingDataStatus(row) {
+      const missingPhone = !String(row.guestPhoneRaw || '').trim();
+      const missingLanguage = !allowedMessageLanguages.has(String(row.language || '').trim().toLowerCase());
+      if (missingPhone && missingLanguage) return { label: 'Manca telefono e lingua', ok: false };
+      if (missingPhone) return { label: 'Manca telefono', ok: false };
+      if (missingLanguage) return { label: 'Manca lingua', ok: false };
+      return { label: 'Completo', ok: true };
+    }
+
+    function bookingMessagesStatus(row) {
+      const messages = guestMessages.filter(message => message.bookingKey && message.bookingKey === row.bookingKey);
+      if (!messages.length) return 'Nessun messaggio generato';
+      const pending = messages.filter(message => message.status !== 'inviato').length;
+      const sent = messages.length - pending;
+      return `${messages.length} messaggi · ${pending} da gestire · ${sent} inviati`;
+    }
+
+    function templateAlreadyUsedForBooking(templateId, bookingKey, currentMessageId = '') {
+      if (!templateId || !bookingKey) return false;
+      return guestMessages.some(message =>
+        String(message.bookingKey || '') === String(bookingKey) &&
+        String(message.templateId || '') === String(templateId) &&
+        String(message.id || '') !== String(currentMessageId || '')
+      );
+    }
+
+    function messageTypeAlreadyPresentForBooking(messageType, bookingKey, currentMessageId = '') {
+      if (!messageType || !bookingKey) return false;
+      return guestMessages.some(message =>
+        String(message.bookingKey || '') === String(bookingKey) &&
+        String(message.messageType || '') === String(messageType || '') &&
+        String(message.id || '') !== String(currentMessageId || '') &&
+        message.status !== 'inviato'
+      );
+    }
+
+    function activeCompatibleTemplates(apartmentId, language) {
+      const requestedLanguage = normalizeMessageLanguage(language);
+      const compatible = guestTemplates.filter(template =>
+        template.isActive &&
+        (!template.apartmentId || template.apartmentId === apartmentId)
+      );
+      const exactLanguage = compatible.filter(template => String(template.language || 'it').toLowerCase() === requestedLanguage);
+      if (requestedLanguage === 'it') return exactLanguage;
+      const italianFallback = compatible.filter(template => String(template.language || 'it').toLowerCase() === 'it');
+      return exactLanguage.length ? exactLanguage : italianFallback;
+    }
+
+    function templateOptionLabel(template, alreadyPresent = false) {
+      const scope = template.apartmentId ? template.apartmentId : 'Globale';
+      const mode = template.autoGenerate ? 'auto' : 'manuale';
+      const suffix = alreadyPresent ? ' - già presente' : '';
+      return `${template.title} - ${messageTypeLabel(template.messageType)} - ${normalizeMessageLanguage(template.language)} - ${scope} - ${mode}${suffix}`;
+    }
+
+    function manualTemplateOptions(row) {
+      const candidates = activeCompatibleTemplates(row.apartmentId, row.language);
+      if (!candidates.length) return '<option value="">Nessun template attivo compatibile</option>';
+      return '<option value="">Scegli template da creare...</option>' + candidates.map(template => {
+        const alreadyPresent = messageTypeAlreadyPresentForBooking(template.messageType, row.bookingKey) || templateAlreadyUsedForBooking(template.id, row.bookingKey);
+        return `<option value="${esc(template.id)}"${alreadyPresent ? ' disabled' : ''}>${esc(templateOptionLabel(template, alreadyPresent))}</option>`;
+      }).join('');
+    }
+
+    function normalizeGuestMessageRecord(record) {
+      if (!record || typeof record !== 'object') return null;
+      const value = (camelKey, snakeKey = camelKey) => record[camelKey] ?? record[snakeKey] ?? '';
+      const id = value('id', 'message_id');
+      if (id === '' || id === null || id === undefined) return null;
+      return {
+        id,
+        bookingKey: value('bookingKey', 'booking_key'),
+        apartmentId: value('apartmentId', 'apartment_id'),
+        templateId: value('templateId', 'template_id') || null,
+        messageType: value('messageType', 'message_type'),
+        language: normalizeMessageLanguage(value('language', 'language')),
+        contactLanguage: normalizeMessageLanguage(value('contactLanguage', 'contact_language') || value('language', 'language')),
+        scheduledAt: value('scheduledAt', 'scheduled_at'),
+        generatedText: value('generatedText', 'generated_text'),
+        status: value('status', 'status') || 'da_inviare',
+        postponedUntil: value('postponedUntil', 'postponed_until'),
+        sentAt: value('sentAt', 'sent_at'),
+        createdAt: value('createdAt', 'created_at'),
+        updatedAt: value('updatedAt', 'updated_at'),
+        guestName: value('guestName', 'guest_name'),
+        guestPhoneRaw: value('guestPhoneRaw', 'guest_phone_raw'),
+        guestPhoneNormalized: value('guestPhoneNormalized', 'guest_phone_normalized'),
+        checkIn: value('checkIn', 'check_in'),
+        checkOut: value('checkOut', 'check_out'),
+        ota: value('ota', 'ota'),
+      };
+    }
+
+    async function fetchGuestMessageById(messageId) {
+      if (!messageId) return null;
+      const payload = await messagesApi(`/api/messages/${messageId}`);
+      return normalizeGuestMessageRecord(payload.message);
+    }
+
+    async function fetchGuestMessageByBookingTemplate(bookingKey, templateId) {
+      if (!bookingKey || !templateId) return null;
+      const path = `/api/messages/find?booking_key=${encodeURIComponent(bookingKey)}&template_id=${encodeURIComponent(templateId)}`;
+      const payload = await messagesApi(path);
+      return normalizeGuestMessageRecord(payload.message);
+    }
+
+    function upsertGuestMessage(message) {
+      const normalized = normalizeGuestMessageRecord(message);
+      if (!normalized || !normalized.id) return null;
+      const index = guestMessages.findIndex(item => String(item.id) === String(normalized.id));
+      if (index >= 0) {
+        guestMessages[index] = normalized;
+      } else {
+        guestMessages.push(normalized);
+      }
+      return normalized;
+    }
+
+    function ensureMessagesApartmentOption(apartmentId) {
+      if (!messagesApartmentFilter || !apartmentId) return;
+      const exists = [...messagesApartmentFilter.options].some(option => option.value === apartmentId);
+      if (!exists) {
+        messagesApartmentFilter.add(new Option(apartmentId, apartmentId));
+      }
+    }
+
+    function openMessageInOperativo(message) {
+      const normalized = upsertGuestMessage(message);
+      if (!normalized) return;
+      targetMessageId = String(normalized.id || '');
+      ensureMessagesApartmentOption(normalized.apartmentId);
+      if (messagesApartmentFilter) messagesApartmentFilter.value = normalized.apartmentId || '';
+      if (messagesPeriodFilter) messagesPeriodFilter.value = '30';
+      if (messageStatusFilter) messageStatusFilter.value = '';
+      setActiveMessagesTab('operativo');
+      renderGuestMessages();
+      window.setTimeout(() => {
+        const card = guestMessagesTable?.querySelector(`[data-message-id="${String(normalized.id).replace(/"/g, '\\"')}"]`);
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 80);
+    }
+
+    function syncMessagesApartmentFilters() {
+      const rows = messageApartmentRows();
+      const options = '<option value="">Tutti gli appartamenti</option>' + rows.map(row => {
+        const id = row.id || '';
+        const label = row.label || id;
+        return id ? `<option value="${esc(id)}">${esc(label || id)}</option>` : '';
+      }).join('');
+      [messagesApartmentFilter, bookingsApartmentFilter].forEach(select => {
+        if (!select) return;
+        const selected = select.value || apartmentFilter.value || '';
+        select.innerHTML = options;
+        select.value = [...select.options].some(option => option.value === selected) ? selected : '';
+      });
+      syncTemplateApartmentFilter();
+    }
+
+    function renderGuestBookings() {
+      const selectedApartment = messagesSelectedApartment('bookings');
+      const period = messagesSelectedPeriod('bookings');
+      const visibleBookings = guestBookings.filter(row =>
+        (!selectedApartment || row.apartmentId === selectedApartment) &&
+        dateWithinFutureCheckinPeriod(row.checkIn, period)
+      );
+      if (guestBookingsCount) guestBookingsCount.textContent = `(${visibleBookings.length})`;
+      guestBookingsTable.innerHTML = visibleBookings.map(row => {
+        const dataStatus = bookingDataStatus(row);
+        const messagesStatus = bookingMessagesStatus(row);
+        return `
+        <article class="booking-card" data-booking-key="${esc(row.bookingKey)}" data-apartment-id="${esc(row.apartmentId)}" data-guest-name="${esc(row.guestName || '')}">
+          <div class="booking-card-head">
+            <div>
+              <h3>${esc(row.guestName || 'Ospite')}</h3>
+              <div class="booking-meta">${esc(row.apartmentLabel || row.apartmentId)} · ${esc(row.ota || '-')}</div>
+              <div class="booking-meta">Check-in: ${fmtDate(row.checkIn)}${row.checkOut ? ` · Check-out: ${fmtDate(row.checkOut)}` : ''}${row.guests ? ` · ${esc(row.guests)} ospiti` : ''}</div>
+            </div>
+            <span class="message-status">${esc(normalizeMessageLanguage(row.language))}</span>
+          </div>
+          <div class="booking-status-row">
+            <span class="status-chip ${dataStatus.ok ? 'ok' : 'warn'}">${esc(dataStatus.label)}</span>
+            <span class="status-chip">${esc(messagesStatus)}</span>
+            ${dataStatus.ok ? '<span class="status-chip ok">Dati completi: puoi preparare/inviare messaggi</span>' : ''}
+          </div>
+          <div class="booking-fields">
+            <label class="field">Telefono WhatsApp <input data-contact="guestPhoneRaw" type="tel" value="${esc(row.guestPhoneRaw)}" placeholder="+39..."></label>
+            <label class="field">Lingua <select data-contact="language">${languageOptions(row.language)}</select></label>
+            <label class="field notes-field">Note <input data-contact="notes" value="${esc(row.notes)}"></label>
+            <button type="button" data-save-contact ${row.bookingKey ? '' : 'disabled'}>Salva dati ospite</button>
+            ${row.bookingKey ? '<button class="ghost" type="button" data-show-booking-messages>Vedi messaggi</button>' : ''}
+          </div>
+          <div class="manual-message-row">
+            <label class="field">Nuovo messaggio da template <select data-manual-template>${manualTemplateOptions(row)}</select></label>
+            <button class="ghost" type="button" data-create-manual-message ${row.bookingKey ? '' : 'disabled'}>Crea messaggio manuale</button>
+          </div>
+        </article>
+      `}).join('') || '<div class="empty">Nessuna prenotazione futura disponibile.</div>';
+    }
+
+    function fallbackGuestBookingsFromCurrentState() {
+      if (!lastData || !Array.isArray(lastData.reservations)) return [];
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - 2);
+      const cutoffDate = isoDate(cutoff);
+      return lastData.reservations
+        .filter(row => row.checkIn && row.checkIn >= cutoffDate)
+        .map(row => ({
+          bookingKey: '',
+          apartmentId: row.apartment || '',
+          apartmentLabel: row.apartmentLabel || row.apartment || '',
+          bookingCode: row.booking || '',
+          guestName: row.guestName || '',
+          checkIn: row.checkIn || '',
+          checkOut: row.checkOut || '',
+          ota: row.ota || '',
+          guests: row.guests || '',
+          guestPhoneRaw: '',
+          guestPhoneNormalized: '',
+          language: 'it',
+          notes: '',
+        }));
+    }
+
+    function renderGuestTemplates() {
+      const selectedApartment = templateApartmentFilter?.value || '';
+      const rows = guestTemplates.filter(row => {
+        const matchesActive = showInactiveTemplates?.checked || row.isActive;
+        const apartmentId = row.apartmentId || '';
+        const matchesApartment = !selectedApartment ||
+          (selectedApartment === '__global__' ? !apartmentId : apartmentId === selectedApartment);
+        return matchesActive && matchesApartment;
+      });
+      messageTemplatesTable.innerHTML = rows.map(row => `
+        <article class="template-card">
+          <div class="template-card-head">
+            <div>
+              <h3>${esc(row.title)}</h3>
+              <div class="template-meta">${esc(row.apartmentId || 'Globale')} · ${esc(messageTypeLabel(row.messageType))} · ${esc(normalizeMessageLanguage(row.language))}</div>
+              <div class="template-meta">Tipo tecnico: ${esc(row.messageType || '-')}</div>
+              <div class="template-meta">${row.autoGenerate ? 'Automatico' : 'Manuale'} · ${esc(scheduleReferenceLabel(row.scheduleReference))} · ${esc(row.sendOffsetDays)} gg · ${esc(row.sendTime || '-')}</div>
+            </div>
+            <span class="message-status">${row.isActive ? 'Attivo' : 'Disattivato'}</span>
+          </div>
+          <div class="template-actions">
+            <button class="ghost tiny" type="button" data-edit-template="${esc(row.id)}">Modifica</button>
+            ${row.isActive
+              ? `<button class="ghost tiny" type="button" data-toggle-template="${esc(row.id)}" data-template-active="0">Disattiva</button>`
+              : `<button class="ghost tiny" type="button" data-toggle-template="${esc(row.id)}" data-template-active="1">Riattiva</button>`}
+          </div>
+        </article>
+      `).join('') || '<div class="empty">Nessun template disponibile.</div>';
+    }
+
+    function resetTemplateForm() {
+      editingTemplateId = null;
+      messageTemplateForm.reset();
+      templateApartmentOptions();
+      if (templateApartmentSelect) templateApartmentSelect.value = '';
+      if (templateMessageTypeSelect) {
+        templateMessageTypeSelect.querySelectorAll('[data-existing-type="1"]').forEach(option => option.remove());
+        templateMessageTypeSelect.value = 'primo_contatto_guida';
+      }
+      if (messageTemplateForm.elements.language) messageTemplateForm.elements.language.value = 'it';
+      if (templateActiveSelect) templateActiveSelect.value = '1';
+      if (templateAutoGenerateSelect) templateAutoGenerateSelect.value = '0';
+      if (templateScheduleReferenceSelect) templateScheduleReferenceSelect.value = 'checkin';
+      if (saveTemplateButton) saveTemplateButton.textContent = 'Aggiungi template';
+      if (cancelTemplateEdit) cancelTemplateEdit.style.display = 'none';
+    }
+
+    function editTemplate(templateId) {
+      const template = guestTemplates.find(row => String(row.id) === String(templateId));
+      if (!template) return;
+      editingTemplateId = template.id;
+      templateApartmentOptions();
+      messageTemplateForm.elements.apartmentId.value = template.apartmentId || '';
+      ensureTemplateMessageTypeOption(template.messageType);
+      messageTemplateForm.elements.messageType.value = template.messageType || '';
+      messageTemplateForm.elements.language.value = normalizeMessageLanguage(template.language);
+      messageTemplateForm.elements.title.value = template.title || '';
+      messageTemplateForm.elements.sendOffsetDays.value = template.sendOffsetDays ?? 0;
+      messageTemplateForm.elements.sendTime.value = template.sendTime || '';
+      messageTemplateForm.elements.body.value = template.body || '';
+      if (templateActiveSelect) templateActiveSelect.value = template.isActive ? '1' : '0';
+      if (templateAutoGenerateSelect) templateAutoGenerateSelect.value = template.autoGenerate ? '1' : '0';
+      if (templateScheduleReferenceSelect) templateScheduleReferenceSelect.value = normalizeScheduleReference(template.scheduleReference);
+      if (saveTemplateButton) saveTemplateButton.textContent = 'Salva modifiche';
+      if (cancelTemplateEdit) cancelTemplateEdit.style.display = '';
+      messageTemplateForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function templatesForMessage(message) {
+      return activeCompatibleTemplates(message.apartmentId, message.contactLanguage || message.language).filter(template =>
+        (!message.messageType || template.messageType === message.messageType) &&
+        !templateAlreadyUsedForBooking(template.id, message.bookingKey, message.id)
+      );
+    }
+
+    function messageTemplateOptions(message) {
+      const candidates = templatesForMessage(message);
+      return '<option value="">Scegli template...</option>' + candidates.map(template => {
+        const selected = String(template.id) === String(message.templateId) ? ' selected' : '';
+        return `<option value="${esc(template.id)}"${selected}>${esc(templateOptionLabel(template))}</option>`;
+      }).join('');
+    }
+
+    function renderGuestMessages() {
+      const wantedStatus = messageStatusFilter.value;
+      const selectedApartment = messagesSelectedApartment('messages');
+      const period = messagesSelectedPeriod('messages');
+      const filteredRows = guestMessages.filter(row => {
+        const isTarget = targetMessageId && String(row.id) === String(targetMessageId);
+        const matchesStatus = wantedStatus ? row.status === wantedStatus : row.status !== 'inviato';
+        const matchesPeriod = wantedStatus === 'inviato'
+          ? dateWithinMessagePeriod(row.sentAt || row.scheduledAt, period)
+          : messageWithinDisplayPeriod(row, period);
+        return isTarget || (
+          matchesStatus &&
+          (!selectedApartment || row.apartmentId === selectedApartment) &&
+          matchesPeriod
+        );
+      });
+      const deduped = dedupeVisibleMessages(filteredRows);
+      const rows = deduped.rows.sort((a, b) =>
+        String(a.postponedUntil || a.scheduledAt || '').localeCompare(String(b.postponedUntil || b.scheduledAt || '')) ||
+        Number(a.id || 0) - Number(b.id || 0)
+      );
+      guestMessagesTable.innerHTML = rows.map(row => `
+        <article class="message-card ${targetMessageId && String(row.id) === String(targetMessageId) ? 'target-message' : ''}" data-message-id="${esc(row.id)}">
+          <div class="message-card-head">
+            <div>
+              <h3>${esc(row.guestName || 'Ospite')}</h3>
+              <div class="message-type-badge">${esc(messageTypeLabel(row.messageType))}</div>
+              <div class="message-facts">
+                <div class="message-fact"><span>Appartamento</span><strong>${esc(row.apartmentId || '-')}</strong></div>
+                <div class="message-fact"><span>Canale / OTA</span><strong>${esc(row.ota || '-')}</strong></div>
+                <div class="message-fact"><span>Check-in</span><strong>${row.checkIn ? fmtDate(row.checkIn) : 'n.d.'}</strong></div>
+                <div class="message-fact"><span>Check-out</span><strong>${row.checkOut ? fmtDate(row.checkOut) : 'n.d.'}</strong></div>
+                <div class="message-fact"><span>Programmato per</span><strong>${fmtDateTimeValue(row.postponedUntil || row.scheduledAt) || 'n.d.'}${isOverdueMessage(row) ? ' · Arretrato' : ''}</strong></div>
+                <div class="message-fact"><span>Lingua</span><strong>${esc(languageLabel(row.contactLanguage || row.language))} (${esc(normalizeMessageLanguage(row.contactLanguage || row.language))})${normalizeMessageLanguage(row.contactLanguage || row.language) !== normalizeMessageLanguage(row.language) ? ` · messaggio ${esc(normalizeMessageLanguage(row.language))}` : ''}</strong></div>
+                <div class="message-fact"><span>Telefono</span><strong>${row.guestPhoneRaw ? esc(row.guestPhoneRaw) : 'mancante'}</strong></div>
+              </div>
+              <div class="message-secondary">Tipo tecnico: ${esc(row.messageType || '-')} · Booking key: ${esc(row.bookingKey || '-')}</div>
+            </div>
+            <span class="message-status">${esc(row.status)}</span>
+          </div>
+          ${isOverdueMessage(row) ? '<div class="status-chip warn">Arretrato · da inviare subito</div>' : ''}
+          ${deduped.hiddenCounts.get(String(row.id)) ? `<div class="status-chip warn">${deduped.hiddenCounts.get(String(row.id))} doppione nascosto</div>` : ''}
+          ${targetMessageId && String(row.id) === String(targetMessageId) && !messageWithinDisplayPeriod(row, period)
+            ? '<div class="status-chip warn">Mostrato perché appena creato/aperto, anche fuori periodo</div>'
+            : ''}
+          <div class="message-editor">
+            <textarea data-message-text ${row.status === 'inviato' ? 'readonly' : ''}>${esc(row.generatedText)}</textarea>
+            <div class="message-template-row">
+              <label class="field">Cambia template di questo messaggio <select data-message-template ${row.status === 'inviato' ? 'disabled' : ''}>${messageTemplateOptions(row)}</select></label>
+              <button class="ghost" type="button" data-apply-template ${row.status === 'inviato' ? 'disabled' : ''}>Applica template</button>
+            </div>
+            <div class="message-secondary">Usa questa select per sostituire il testo con un template dello stesso tipo.</div>
+          </div>
+          <div class="message-actions">
+            <button class="ghost" type="button" data-copy-message>Copia</button>
+            <button class="ghost" type="button" data-whatsapp-message ${row.guestPhoneNormalized ? '' : 'disabled'}>WhatsApp</button>
+            ${row.templateId && row.status !== 'inviato' ? '<button class="ghost" type="button" data-regenerate-template>Rigenera da template</button>' : ''}
+            <button type="button" data-sent-message ${row.status === 'inviato' ? 'disabled' : ''}>Inviato</button>
+            <button class="ghost" type="button" data-postpone-message ${row.status === 'inviato' ? 'disabled' : ''}>Posticipa</button>
+            ${currentUserInfo?.role === 'admin' && row.status !== 'inviato' ? '<button class="ghost" type="button" data-delete-message>Elimina non inviato</button>' : ''}
+            ${row.guestPhoneNormalized ? '' : '<button class="ghost" type="button" data-complete-booking>Completa dati ospite</button>'}
+          </div>
+        </article>
+      `).join('') || '<div class="empty">Nessun messaggio per i filtri selezionati.</div>';
+    }
+
+    async function loadGuestBookingsOnly() {
+      const bookingsPayload = await messagesApi('/api/messages/bookings');
+      guestBookings = bookingsPayload.bookings || [];
+      if (!guestBookings.length) guestBookings = fallbackGuestBookingsFromCurrentState();
+      syncMessagesApartmentFilters();
+      renderGuestBookings();
+    }
+
+    async function loadGuestTemplatesOnly() {
+      const templatesPayload = await messagesApi('/api/message-templates');
+      guestTemplates = templatesPayload.templates || [];
+      templateApartmentOptions();
+      syncMessagesApartmentFilters();
+      renderGuestTemplates();
+    }
+
+    async function loadGuestMessagesOnly() {
+      const messagesPayload = await messagesApi('/api/messages');
+      guestMessages = (messagesPayload.messages || []).map(normalizeGuestMessageRecord).filter(Boolean);
+      syncMessagesApartmentFilters();
+      renderGuestMessages();
+    }
+
+    async function loadMessagesModule(force = false) {
+      if (messagesLoaded && !force) return;
+      const errors = [];
+      let messagesLoadedFromApi = false;
+      try {
+        await loadGuestBookingsOnly();
+      } catch (error) {
+        guestBookings = fallbackGuestBookingsFromCurrentState();
+        renderGuestBookings();
+        errors.push(error.message);
+      }
+      try {
+        await loadGuestTemplatesOnly();
+      } catch (error) {
+        renderGuestTemplates();
+        errors.push(error.message);
+      }
+      try {
+        await loadGuestMessagesOnly();
+        messagesLoadedFromApi = true;
+      } catch (error) {
+        renderGuestMessages();
+        errors.push(error.message);
+      }
+      if (messagesLoadedFromApi && !guestMessages.length && guestBookings.length && guestTemplates.some(template => template.isActive)) {
+        try {
+          const syncPayload = await messagesApi('/api/messages/sync', { method: 'POST', body: '{}' });
+          await loadGuestMessagesOnly();
+          showMessagesNotice(syncSummaryText(syncPayload));
+        } catch (error) {
+          errors.push(error.message);
+        }
+      }
+      messagesLoaded = true;
+      templateApartmentOptions();
+      renderGuestBookings();
+      renderGuestTemplates();
+      renderGuestMessages();
+      if (errors.length) {
+        showMessagesError([...new Set(errors)].join(' '));
+      }
     }
 
     function isoDate(date) {
@@ -1448,6 +3041,7 @@
         saveDeliveriesArchive();
       });
       deliveriesBox.appendChild(row);
+      renderFilteredConfigRows();
     }
 
     function addStaffUserRow(values = {}) {
@@ -1515,16 +3109,50 @@
       serializeStaffUsers();
     }
 
+    function applyApartmentInputValue(input, values) {
+      if (input.type === 'checkbox') {
+        input.checked = ['1', 'true', 'on', 'si', 'sì', true].includes(values[input.dataset.apartment]);
+      } else {
+        input.value = values[input.dataset.apartment] ?? input.value;
+      }
+    }
+
+    function syncApartmentInputPeers(input) {
+      const row = input.closest('tr');
+      const id = row?.querySelector('[data-apartment="id"]')?.value || '';
+      const key = input.dataset.apartment;
+      if (!id || !key) return;
+      document.querySelectorAll('.apartment-row, .laundry-apartment-row').forEach(peerRow => {
+        if (peerRow === row) return;
+        const peerId = peerRow.querySelector('[data-apartment="id"]')?.value || '';
+        if (peerId !== id) return;
+        const peer = peerRow.querySelector(`[data-apartment="${key}"]`);
+        if (!peer) return;
+        if (peer.type === 'checkbox') peer.checked = input.checked;
+        else peer.value = input.value;
+      });
+    }
+
+    function bindApartmentInput(input) {
+      input.addEventListener('input', () => {
+        syncApartmentInputPeers(input);
+        saveApartmentsArchive();
+      });
+      input.addEventListener('change', () => {
+        syncApartmentInputPeers(input);
+        saveApartmentsArchive();
+      });
+    }
+
     function addApartmentRow(values = {}) {
       const defaults = defaultApartmentValues();
       values = { ...defaults, ...values };
       const row = document.createElement('tr');
       row.className = 'apartment-row';
+      row.dataset.apartmentId = values.id || '';
       row.innerHTML = `
         <td><input data-apartment="id" type="text" placeholder="ID006_Via Fondazza" readonly></td>
         <td><input data-apartment="label" type="text" placeholder="Via Fondazza"></td>
-        <td><input data-apartment="address" type="text" placeholder="Via..., Bologna"></td>
-        <td><input data-apartment="useLaundry" type="checkbox" value="1" title="Includi nel modulo biancheria"></td>
         <td><input data-apartment="avoidSundayCleaning" type="checkbox" value="1" title="Evita pulizie di domenica se possibile"></td>
         <td><input data-apartment="basePrice" type="number" min="0" step="1" value="90"></td>
         <td><input data-apartment="weekendPrice" type="number" min="0" step="1" value="110"></td>
@@ -1532,6 +3160,35 @@
         <td><input data-apartment="extraFee" type="number" min="0" step="1" value="0"></td>
         <td class="price-limit"><input data-apartment="minPrice" type="number" min="0" step="1" value="65" title="Prezzo minimo suggeribile"></td>
         <td class="price-limit"><input data-apartment="maxPrice" type="number" min="0" step="1" value="180" title="Prezzo massimo suggeribile"></td>
+        <td><input data-apartment="guestCol" type="text" placeholder="es. H"></td>
+        <td><input data-apartment="extraBedCol" type="text" placeholder="es. AN"></td>
+        <td><button class="ghost tiny" type="button">Rimuovi</button></td>
+      `;
+      row.querySelectorAll('[data-apartment]').forEach(input => {
+        applyApartmentInputValue(input, values);
+        bindApartmentInput(input);
+      });
+      row.querySelector('button').addEventListener('click', () => {
+        const id = row.querySelector('[data-apartment="id"]')?.value || '';
+        row.remove();
+        laundryRegistry.querySelector(`[data-laundry-row="${CSS.escape(id)}"]`)?.remove();
+        saveApartmentsArchive();
+        renderFilteredConfigRows();
+      });
+      apartmentsRegistry.appendChild(row);
+      addLaundryApartmentRow(values);
+      renderFilteredConfigRows();
+    }
+
+    function addLaundryApartmentRow(values = {}) {
+      const row = document.createElement('tr');
+      row.className = 'laundry-apartment-row';
+      row.dataset.laundryRow = values.id || '';
+      row.innerHTML = `
+        <td><input data-apartment="id" type="text" placeholder="ID006_Via Fondazza" readonly></td>
+        <td><input data-apartment="label" type="text" placeholder="Via Fondazza"></td>
+        <td><input data-apartment="address" type="text" placeholder="Via..., Bologna"></td>
+        <td><input data-apartment="useLaundry" type="checkbox" value="1" title="Includi nel modulo biancheria"></td>
         <td><input data-apartment="startBed" type="number" min="0" step="1" value="0"></td>
         <td><input data-apartment="startBath" type="number" min="0" step="1" value="0"></td>
         <td><input data-apartment="startMats" type="number" min="0" step="1" value="0"></td>
@@ -1541,24 +3198,12 @@
         <td><input data-apartment="bathGuests" type="number" min="1" step="1" value="1"></td>
         <td><input data-apartment="matsStandard" type="number" min="0" step="1" value="1"></td>
         <td><input data-apartment="matsExtra" type="number" min="0" step="1" value="0"></td>
-        <td><input data-apartment="guestCol" type="text" placeholder="es. H"></td>
-        <td><input data-apartment="extraBedCol" type="text" placeholder="es. AN"></td>
-        <td><button class="ghost tiny" type="button">Rimuovi</button></td>
       `;
       row.querySelectorAll('[data-apartment]').forEach(input => {
-        if (input.type === 'checkbox') {
-          input.checked = ['1', 'true', 'on', 'si', 'sì', true].includes(values[input.dataset.apartment]);
-        } else {
-          input.value = values[input.dataset.apartment] ?? input.value;
-        }
-        input.addEventListener('input', saveApartmentsArchive);
-        input.addEventListener('change', saveApartmentsArchive);
+        applyApartmentInputValue(input, values);
+        bindApartmentInput(input);
       });
-      row.querySelector('button').addEventListener('click', () => {
-        row.remove();
-        saveApartmentsArchive();
-      });
-      apartmentsRegistry.appendChild(row);
+      laundryRegistry.appendChild(row);
     }
 
     function sheetNameToLabel(name) {
@@ -1572,8 +3217,10 @@
     function ensureApartmentRowsFromWorkbook(apartments = []) {
       const saved = new Map(getStoredApartments().map(row => [row.id, row]));
       apartmentsRegistry.innerHTML = '';
+      laundryRegistry.innerHTML = '';
       if (!apartments.length) {
-        apartmentsRegistry.innerHTML = '<tr><td colspan="23" class="empty">Nessun foglio appartamento trovato nel file caricato.</td></tr>';
+        apartmentsRegistry.innerHTML = '<tr><td colspan="12" class="empty">Nessun foglio appartamento trovato nel file caricato.</td></tr>';
+        laundryRegistry.innerHTML = '<tr><td colspan="13" class="empty">Nessun foglio appartamento trovato nel file caricato.</td></tr>';
         apartmentsInput.value = JSON.stringify(getStoredApartments());
         return;
       }
@@ -1610,32 +3257,44 @@
       serializeApartments();
     }
 
-    function selectedApartmentRow() {
+    function selectedApartmentRows() {
       const selected = apartmentFilter.value;
-      if (!selected) return null;
-      return [...apartmentsRegistry.querySelectorAll('.apartment-row')].find(row => {
+      if (!selected) return [];
+      return [...document.querySelectorAll('.apartment-row, .laundry-apartment-row')].filter(row => {
         const id = row.querySelector('[data-apartment="id"]');
         return id && id.value === selected;
       });
     }
 
+    function selectedApartmentRow() {
+      return selectedApartmentRows()[0] || null;
+    }
+
     function syncVisibleSettingsToSelectedApartment() {
-      const row = selectedApartmentRow();
-      if (!row) return;
+      const rows = selectedApartmentRows();
+      if (!rows.length) return;
       ['bedGuests', 'bathGuests', 'matsStandard', 'matsExtra', 'startBed', 'startBath', 'startMats', 'startDate', 'threshold'].forEach(key => {
         const source = document.querySelector(`[name="${key}"]`);
-        const target = row.querySelector(`[data-apartment="${key}"]`);
-        if (source && target) target.value = source.value;
+        rows.forEach(row => {
+          const target = row.querySelector(`[data-apartment="${key}"]`);
+          if (source && target) target.value = source.value;
+        });
       });
       saveApartmentsArchive();
     }
 
     function getApartmentsRegistry() {
-      return [...apartmentsRegistry.querySelectorAll('.apartment-row')].map(row => {
-        const data = {};
-        row.querySelectorAll('[data-apartment]').forEach(input => data[input.dataset.apartment] = input.type === 'checkbox' ? (input.checked ? '1' : '') : input.value);
-        return data;
-      }).filter(row => row.id || row.label || row.address);
+      const rowsById = new Map();
+      [...document.querySelectorAll('.apartment-row, .laundry-apartment-row')].forEach(row => {
+        const id = row.querySelector('[data-apartment="id"]')?.value || '';
+        if (!id) return;
+        const data = rowsById.get(id) || { id };
+        row.querySelectorAll('[data-apartment]').forEach(input => {
+          data[input.dataset.apartment] = input.type === 'checkbox' ? (input.checked ? '1' : '') : input.value;
+        });
+        rowsById.set(id, data);
+      });
+      return [...rowsById.values()].filter(row => row.id || row.label || row.address);
     }
 
     function serializeApartments() {
@@ -1733,7 +3392,8 @@
     }
 
     function restoreApartmentsArchive() {
-      apartmentsRegistry.innerHTML = `<tr><td colspan="23" class="empty">Carica l'XLS: gli appartamenti verranno letti automaticamente dai nomi dei fogli.</td></tr>`;
+      apartmentsRegistry.innerHTML = `<tr><td colspan="12" class="empty">Carica l'XLS: gli appartamenti verranno letti automaticamente dai nomi dei fogli.</td></tr>`;
+      laundryRegistry.innerHTML = `<tr><td colspan="13" class="empty">Carica l'XLS: gli appartamenti verranno letti automaticamente dai nomi dei fogli.</td></tr>`;
       apartmentsInput.value = JSON.stringify(getStoredApartments());
     }
 
@@ -1869,6 +3529,11 @@
 
     function render(data) {
       lastData = data;
+      if (messagesLoaded && !guestBookings.length) {
+        guestBookings = fallbackGuestBookingsFromCurrentState();
+        renderGuestBookings();
+      }
+      templateApartmentOptions();
       if (globalUpdatedBox) {
         globalUpdatedBox.classList.add('active');
         const strong = globalUpdatedBox.querySelector('strong');
@@ -1909,6 +3574,8 @@
       const visibleBookings = (data.bookings || []).filter(row => !selectedApartment || row.apartment === selectedApartment);
       apartmentFilter.innerHTML = '<option value="">Tutti gli appartamenti</option>' + workbookApartments.map(a => `<option value="${esc(a.name)}">${esc(a.label || a.name)}</option>`).join('');
       apartmentFilter.value = selectedApartment;
+      renderFilteredConfigRows();
+      syncMessagesApartmentFilters();
       document.getElementById('kpiApartments').textContent = data.summary.apartments;
       document.getElementById('kpiBookings').textContent = visibleBookings.filter(row => row.type === 'booking').length;
       document.getElementById('kpiCritical').textContent = visibleBookings.filter(row => row.type === 'booking' && row.status !== 'green').length;
@@ -1986,26 +3653,46 @@
       renderCleaning(data);
     }
 
+
+    function renderFilteredConfigRows() {
+      const selectedApartment = apartmentFilter.value || '';
+      document.querySelectorAll('.apartment-row, .laundry-apartment-row').forEach(row => {
+        const id = row.querySelector('[data-apartment="id"]')?.value || '';
+        row.hidden = Boolean(selectedApartment && id !== selectedApartment);
+      });
+      deliveriesBox.querySelectorAll('.delivery-row').forEach(row => {
+        const id = row.querySelector('[data-delivery="apartment"]')?.value || '';
+        row.hidden = Boolean(selectedApartment && id !== selectedApartment);
+      });
+    }
+
+    function openConfigPanel(panelName) {
+      const panels = {
+        config: [configPanel, configToggle, 'Chiudi configurazione', 'Configura appartamenti'],
+        laundry: [laundryPanel, laundryConfigToggle, 'Chiudi consegne', 'Consegne biancheria'],
+        staff: [staffPanel, staffConfigToggle, 'Chiudi utenti', 'Utenti staff'],
+      };
+      const [panel, toggle, openLabel, closedLabel] = panels[panelName];
+      const shouldOpen = !panel.classList.contains('active');
+      Object.values(panels).forEach(([itemPanel, itemToggle,, itemClosedLabel]) => {
+        itemPanel.classList.remove('active');
+        itemToggle.textContent = itemClosedLabel;
+      });
+      if (shouldOpen) {
+        panel.classList.add('active');
+        toggle.textContent = openLabel;
+      }
+      renderFilteredConfigRows();
+      if (shouldOpen && panelName === 'staff') staffUsersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     addDelivery.addEventListener('click', () => addDeliveryRow({ apartment: apartmentFilter.value || '' }));
+    apartmentFilter.addEventListener('change', renderFilteredConfigRows);
     addStaffUser.addEventListener('click', () => addStaffUserRow({ active: '1' }));
     if (addApartment) addApartment.addEventListener('click', () => addApartmentRow());
-    configToggle.addEventListener('click', () => {
-      configPanel.classList.toggle('active');
-      configToggle.textContent = configPanel.classList.contains('active') ? 'Chiudi configurazione' : 'Configura appartamenti';
-      if (configPanel.classList.contains('active')) {
-        staffPanel.classList.remove('active');
-        staffConfigToggle.textContent = 'Utenti staff';
-      }
-    });
-    staffConfigToggle.addEventListener('click', () => {
-      staffPanel.classList.toggle('active');
-      staffConfigToggle.textContent = staffPanel.classList.contains('active') ? 'Chiudi utenti' : 'Utenti staff';
-      if (staffPanel.classList.contains('active')) {
-        configPanel.classList.remove('active');
-        configToggle.textContent = 'Configura appartamenti';
-        staffUsersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
+    configToggle.addEventListener('click', () => openConfigPanel('config'));
+    laundryConfigToggle.addEventListener('click', () => openConfigPanel('laundry'));
+    staffConfigToggle.addEventListener('click', () => openConfigPanel('staff'));
     saveStaffUsers.addEventListener('click', async () => {
       errorBox.style.display = 'none';
       noticeBox.style.display = 'none';
@@ -2035,6 +3722,480 @@
     moduleButtons.forEach(button => {
       button.addEventListener('click', () => setActiveModule(button.dataset.moduleTarget));
     });
+    backToDashboard?.addEventListener('click', () => {
+      setActiveModule('pricing');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    messagesTabs.forEach(button => {
+      button.addEventListener('click', () => {
+        clearMessagesFeedback();
+        targetMessageId = '';
+        setActiveMessagesTab(button.dataset.messagesTab);
+      });
+    });
+    messageStatusFilter.addEventListener('change', () => {
+      clearMessagesFeedback();
+      targetMessageId = '';
+      renderGuestMessages();
+    });
+    messagesApartmentFilter?.addEventListener('change', () => {
+      clearMessagesFeedback();
+      targetMessageId = '';
+      renderGuestMessages();
+    });
+    messagesPeriodFilter?.addEventListener('change', () => {
+      clearMessagesFeedback();
+      targetMessageId = '';
+      renderGuestMessages();
+    });
+    bookingsApartmentFilter?.addEventListener('change', () => {
+      clearMessagesFeedback();
+      targetMessageId = '';
+      renderGuestBookings();
+    });
+    bookingsPeriodFilter?.addEventListener('change', () => {
+      clearMessagesFeedback();
+      targetMessageId = '';
+      renderGuestBookings();
+    });
+    showInactiveTemplates?.addEventListener('change', () => {
+      clearMessagesFeedback();
+      renderGuestTemplates();
+    });
+    templateApartmentFilter?.addEventListener('change', () => {
+      clearMessagesFeedback();
+      renderGuestTemplates();
+    });
+    refreshGuestMessages.addEventListener('click', async () => {
+      clearMessagesFeedback();
+      try {
+        await loadMessagesModule(true);
+        showMessagesNotice('Dashboard messaggi aggiornata.');
+      } catch (error) {
+        showMessagesError(error.message);
+      }
+    });
+    refreshMessageContacts?.addEventListener('click', async () => {
+      clearMessagesFeedback();
+      refreshMessageContacts.disabled = true;
+      try {
+        const payload = await messagesApi('/api/messages/refresh-contacts', { method: 'POST', body: '{}' });
+        await loadGuestMessagesOnly();
+        showMessagesNotice(`Contatti messaggi aggiornati: ${payload.updated || 0} righe riallineate.`);
+      } catch (error) {
+        showMessagesError(error.message);
+      } finally {
+        refreshMessageContacts.disabled = false;
+      }
+    });
+    showDuplicateMessages?.addEventListener('change', () => {
+      clearMessagesFeedback();
+      renderGuestMessages();
+    });
+    cleanupDuplicateMessages?.addEventListener('click', async () => {
+      clearMessagesFeedback();
+      const confirmed = window.confirm('Pulire i doppioni non inviati? Verranno mantenuti i messaggi migliori per lingua contatto e aggiornamento recente. I messaggi inviati non verranno toccati.');
+      if (!confirmed) return;
+      cleanupDuplicateMessages.disabled = true;
+      try {
+        const payload = await messagesApi('/api/messages/cleanup-duplicates', { method: 'POST', body: '{}' });
+        await loadGuestMessagesOnly();
+        showMessagesNotice(`Pulizia doppioni completata: ${payload.deleted || 0} eliminati, ${payload.kept || 0} mantenuti, ${payload.duplicateGroups || 0} gruppi trovati.`);
+      } catch (error) {
+        showMessagesError(error.message);
+      } finally {
+        cleanupDuplicateMessages.disabled = false;
+      }
+    });
+    runMessagesDebug?.addEventListener('click', runMessagesApiDebug);
+    syncGuestMessages.addEventListener('click', async () => {
+      clearMessagesFeedback();
+      syncGuestMessages.disabled = true;
+      try {
+        const payload = await messagesApi('/api/messages/sync', { method: 'POST', body: '{}' });
+        await loadMessagesModule(true);
+        showMessagesNotice(syncSummaryText(payload));
+      } catch (error) {
+        showMessagesError(error.message);
+      } finally {
+        syncGuestMessages.disabled = false;
+      }
+    });
+    guestBookingsTable.addEventListener('click', async event => {
+      const showMessagesButton = event.target.closest('[data-show-booking-messages]');
+      if (showMessagesButton) {
+        clearMessagesFeedback();
+        const row = showMessagesButton.closest('[data-booking-key]');
+        if (row) {
+          if (messagesApartmentFilter) messagesApartmentFilter.value = row.dataset.apartmentId || '';
+          if (messagesPeriodFilter && bookingsPeriodFilter) messagesPeriodFilter.value = bookingsPeriodFilter.value || '14';
+          if (messageStatusFilter) messageStatusFilter.value = '';
+          setActiveMessagesTab('operativo');
+          renderGuestMessages();
+        }
+        return;
+      }
+      const createManualButton = event.target.closest('[data-create-manual-message]');
+      if (createManualButton) {
+        clearMessagesFeedback();
+        const row = createManualButton.closest('[data-booking-key]');
+        const templateId = row?.querySelector('[data-manual-template]')?.value || '';
+        if (!row?.dataset.bookingKey) {
+          showMessagesError('Booking key mancante: ricarica il modulo Messaggi e riprova.');
+          return;
+        }
+        if (!templateId) {
+          showMessagesError('Seleziona un template per creare il messaggio manuale.');
+          return;
+        }
+        const originalText = createManualButton.textContent;
+        createManualButton.disabled = true;
+        createManualButton.textContent = 'Creo...';
+        try {
+          const payload = await messagesApi('/api/messages/manual', {
+            method: 'POST',
+            body: JSON.stringify({
+              bookingKey: row.dataset.bookingKey || '',
+              templateId,
+            }),
+          });
+          let rawMessageRecord = payload.messageRecord || (payload.message && typeof payload.message === 'object' ? payload.message : null);
+          if (rawMessageRecord && !rawMessageRecord.id && (payload.id || payload.messageId || payload.existingMessageId)) {
+            rawMessageRecord = { ...rawMessageRecord, id: payload.id || payload.messageId || payload.existingMessageId };
+          }
+          const lookupBookingKey = payload.bookingKey || row.dataset.bookingKey || '';
+          const lookupTemplateId = payload.templateId || templateId || '';
+          const candidateId = payload.existingMessageId || payload.id || payload.messageId || rawMessageRecord?.id || '';
+          let messageRecord = normalizeGuestMessageRecord(rawMessageRecord);
+          if ((!messageRecord || !messageRecord.apartmentId) && candidateId) {
+            messageRecord = await fetchGuestMessageById(candidateId);
+          }
+          if (!messageRecord) {
+            await loadGuestMessagesOnly();
+            messageRecord = candidateId
+              ? guestMessages.find(item => String(item.id) === String(candidateId))
+              : guestMessages.find(item =>
+                  String(item.bookingKey || '') === String(lookupBookingKey) &&
+                  String(item.templateId || '') === String(lookupTemplateId)
+                );
+          }
+          if (!messageRecord) {
+            try {
+              messageRecord = await fetchGuestMessageByBookingTemplate(lookupBookingKey, lookupTemplateId);
+            } catch (lookupError) {
+              appendMessagesDebug('Fallback ricerca messaggio manuale fallita', {
+                bookingKey: lookupBookingKey,
+                templateId: lookupTemplateId,
+                errore: lookupError.message,
+                rispostaManuale: payload,
+              });
+            }
+          }
+          renderGuestBookings();
+          if (messageRecord) {
+            openMessageInOperativo(messageRecord);
+          } else if (payload.alreadyExists || payload.created || candidateId) {
+            const payloadKeys = Object.keys(payload || {}).join(', ') || '-';
+            showMessagesError(`Messaggio creato/trovato ma non visibile nella lista. ID: ${candidateId || '-'}, scheduled_at: ${payload.scheduledAt || '-'}, apartment_id: ${payload.apartmentId || '-'}, status: ${payload.status || '-'}. Campi risposta: ${payloadKeys}.`);
+            return;
+          }
+          const noticeKind = payload.created ? 'success' : 'info';
+          const existingId = payload.existingMessageId || messageRecord?.id || candidateId || '';
+          const details = existingId
+            ? ` ID ${existingId} · ${messageRecord?.apartmentId || payload.apartmentId || '-'} · ${messageRecord?.scheduledAt || payload.scheduledAt || '-'} · ${messageRecord?.status || payload.status || '-'}`
+            : '';
+          const action = payload.alreadyExists && existingId
+            ? { label: 'Apri messaggio esistente', attr: `data-open-existing-message="${esc(existingId)}"` }
+            : null;
+          showMessagesNotice(`${payload.notice || payload.message || (payload.created ? 'Messaggio manuale creato.' : 'Messaggio gia presente per questa prenotazione.')}${details}`, noticeKind, action);
+        } catch (error) {
+          showMessagesError(error.message);
+        } finally {
+          createManualButton.disabled = false;
+          createManualButton.textContent = originalText;
+        }
+        return;
+      }
+      const button = event.target.closest('[data-save-contact]');
+      if (!button) return;
+      clearMessagesFeedback();
+      const row = button.closest('[data-booking-key]');
+      const value = name => row.querySelector(`[data-contact="${name}"]`)?.value || '';
+      const originalText = button.textContent;
+      const contactPayload = {
+        bookingKey: row.dataset.bookingKey || '',
+        guestPhoneRaw: value('guestPhoneRaw'),
+        language: normalizeMessageLanguage(value('language')),
+        notes: value('notes'),
+      };
+      appendMessagesDebug('Tentativo salvataggio contatto', {
+        booking_key_usata: contactPayload.bookingKey,
+        apartment_id: row.dataset.apartmentId || '',
+        guest_name: row.dataset.guestName || '',
+        telefono_raw: contactPayload.guestPhoneRaw,
+        telefono_normalizzato_frontend: normalizeDebugPhone(contactPayload.guestPhoneRaw),
+        lingua: contactPayload.language,
+      });
+      button.disabled = true;
+      button.textContent = 'Salvo...';
+      try {
+        const result = await debugFetch('/api/booking-contacts', {
+          method: 'PUT',
+          body: JSON.stringify(contactPayload),
+        });
+        appendMessagesDebug('Risposta PUT /api/booking-contacts', {
+          booking_key_usata: contactPayload.bookingKey,
+          apartment_id: row.dataset.apartmentId || '',
+          guest_name: row.dataset.guestName || '',
+          telefono_raw: contactPayload.guestPhoneRaw,
+          telefono_normalizzato_frontend: normalizeDebugPhone(contactPayload.guestPhoneRaw),
+          lingua: contactPayload.language,
+          status_http: result.status,
+          risposta: result,
+        });
+        if (!result.ok || !result.jsonValido) {
+          throw new Error(result.errore || `Errore ${result.status || ''} salvataggio contatto.`);
+        }
+        await loadGuestBookingsOnly();
+        await loadGuestMessagesOnly();
+        showMessagesNotice('Contatto salvato.');
+      } catch (error) {
+        showMessagesError(error.message);
+      } finally {
+        button.disabled = false;
+        button.textContent = originalText;
+      }
+    });
+    messageTemplateForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      clearMessagesFeedback();
+      const values = Object.fromEntries(new FormData(messageTemplateForm).entries());
+      values.language = normalizeMessageLanguage(values.language);
+      values.isActive = values.isActive !== '0';
+      values.autoGenerate = values.autoGenerate === '1';
+      values.scheduleReference = normalizeScheduleReference(values.scheduleReference);
+      const submitButton = messageTemplateForm.querySelector('button[type="submit"]');
+      const wasEditing = Boolean(editingTemplateId);
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Salvo...';
+      }
+      try {
+        const path = editingTemplateId ? `/api/message-templates/${editingTemplateId}` : '/api/message-templates';
+        await messagesApi(path, {
+          method: editingTemplateId ? 'PATCH' : 'POST',
+          body: JSON.stringify(values),
+        });
+        resetTemplateForm();
+        await loadGuestTemplatesOnly();
+        showMessagesNotice(wasEditing
+          ? 'Template aggiornato. I messaggi già generati non vengono aggiornati automaticamente: usa “Rigenera da template” sui messaggi non inviati.'
+          : 'Template salvato.');
+      } catch (error) {
+        showMessagesError(error.message);
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = editingTemplateId ? 'Salva modifiche' : 'Aggiungi template';
+        }
+      }
+    });
+    cancelTemplateEdit?.addEventListener('click', () => {
+      clearMessagesFeedback();
+      resetTemplateForm();
+    });
+    messageTemplatesTable.addEventListener('click', async event => {
+      const editButton = event.target.closest('[data-edit-template]');
+      if (editButton) {
+        clearMessagesFeedback();
+        editTemplate(editButton.dataset.editTemplate);
+        return;
+      }
+      const button = event.target.closest('[data-toggle-template]');
+      if (!button) return;
+      clearMessagesFeedback();
+      try {
+        const active = button.dataset.templateActive === '1';
+        await messagesApi(`/api/message-templates/${button.dataset.toggleTemplate}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ isActive: active }),
+        });
+        await loadGuestTemplatesOnly();
+        showMessagesNotice(active ? 'Template riattivato.' : 'Template disattivato.');
+      } catch (error) {
+        showMessagesError(error.message);
+      }
+    });
+    guestMessagesTable.addEventListener('click', async event => {
+      if (event.target.closest('button')) clearMessagesFeedback();
+      const row = event.target.closest('[data-message-id]');
+      if (!row) return;
+      const message = guestMessages.find(item => String(item.id) === row.dataset.messageId);
+      if (!message) return;
+      const text = row.querySelector('[data-message-text]').value;
+      try {
+        if (event.target.closest('[data-apply-template]')) {
+          if (message.status === 'inviato') {
+            window.alert('Messaggio gia segnato come inviato: non viene sovrascritto.');
+            return;
+          }
+          const select = row.querySelector('[data-message-template]');
+          const templateId = select?.value || '';
+          if (!templateId) throw new Error('Seleziona un template da applicare.');
+          if (text !== (message.generatedText || '')) {
+            const confirmed = window.confirm('Il testo del messaggio e stato modificato manualmente. Vuoi sovrascriverlo applicando il template selezionato?');
+            if (!confirmed) return;
+          }
+          const button = event.target.closest('[data-apply-template]');
+          const originalText = button.textContent;
+          button.disabled = true;
+          button.textContent = 'Applico...';
+          try {
+            const payload = await messagesApi(`/api/messages/${message.id}/apply-template`, {
+              method: 'POST',
+              body: JSON.stringify({ templateId }),
+            });
+            const updated = payload.message;
+            if (updated) {
+              guestMessages = guestMessages.map(item => String(item.id) === String(updated.id) ? updated : item);
+              row.querySelector('[data-message-text]').value = updated.generatedText || '';
+              message.templateId = updated.templateId;
+              message.messageType = updated.messageType;
+              message.language = updated.language;
+              message.contactLanguage = updated.contactLanguage || updated.language;
+              message.generatedText = updated.generatedText;
+              message.status = updated.status;
+              renderGuestMessages();
+            }
+            showMessagesNotice('Template applicato.');
+          } finally {
+            button.disabled = false;
+            button.textContent = originalText;
+          }
+          return;
+        }
+        if (event.target.closest('[data-copy-message]')) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+        if (event.target.closest('[data-regenerate-template]')) {
+          if (message.status === 'inviato') {
+            showMessagesNotice('Messaggio già inviato, non può essere rigenerato.', 'info');
+            return;
+          }
+          if (!message.templateId) throw new Error('Questo messaggio non ha un template collegato.');
+          if (text !== (message.generatedText || '')) {
+            const confirmed = window.confirm('Questo testo potrebbe essere stato modificato manualmente. Vuoi rigenerarlo dal template e sovrascriverlo?');
+            if (!confirmed) return;
+          }
+          const button = event.target.closest('[data-regenerate-template]');
+          const originalText = button.textContent;
+          button.disabled = true;
+          button.textContent = 'Rigenero...';
+          try {
+            const payload = await messagesApi(`/api/messages/${message.id}/regenerate-template`, {
+              method: 'POST',
+              body: '{}',
+            });
+            const updated = payload.message;
+            if (updated) {
+              guestMessages = guestMessages.map(item => String(item.id) === String(updated.id) ? updated : item);
+              row.querySelector('[data-message-text]').value = updated.generatedText || '';
+              message.templateId = updated.templateId;
+              message.messageType = updated.messageType;
+              message.language = updated.language;
+              message.contactLanguage = updated.contactLanguage || updated.language;
+              message.scheduledAt = updated.scheduledAt;
+              message.generatedText = updated.generatedText;
+              message.status = updated.status;
+              renderGuestMessages();
+            }
+            showMessagesNotice('Messaggio rigenerato dal template aggiornato.');
+          } finally {
+            button.disabled = false;
+            button.textContent = originalText;
+          }
+          return;
+        }
+        if (event.target.closest('[data-whatsapp-message]')) {
+          if (!message.guestPhoneNormalized) return;
+          openWhatsAppMessage(message.guestPhoneNormalized, text);
+          return;
+        }
+        if (event.target.closest('[data-complete-booking]')) {
+          if (bookingsApartmentFilter) bookingsApartmentFilter.value = message.apartmentId || '';
+          if (bookingsPeriodFilter && messagesPeriodFilter) bookingsPeriodFilter.value = messagesPeriodFilter.value || '14';
+          setActiveMessagesTab('prenotazioni');
+          renderGuestBookings();
+          return;
+        }
+        if (event.target.closest('[data-delete-message]')) {
+          if (message.status === 'inviato') {
+            showMessagesNotice('Messaggio inviato: non può essere eliminato.', 'info');
+            return;
+          }
+          const confirmed = window.confirm('Eliminare questo messaggio non inviato? I messaggi inviati non possono essere eliminati.');
+          if (!confirmed) return;
+          const button = event.target.closest('[data-delete-message]');
+          const originalText = button.textContent;
+          button.disabled = true;
+          button.textContent = 'Elimino...';
+          try {
+            await messagesApi(`/api/messages/${message.id}`, { method: 'DELETE' });
+            guestMessages = guestMessages.filter(item => String(item.id) !== String(message.id));
+            renderGuestMessages();
+            showMessagesNotice('Messaggio non inviato eliminato.');
+          } finally {
+            button.disabled = false;
+            button.textContent = originalText;
+          }
+          return;
+        }
+        if (event.target.closest('[data-sent-message]')) {
+          if (message.status === 'inviato') return;
+          const button = event.target.closest('[data-sent-message]');
+          const originalText = button.textContent;
+          button.disabled = true;
+          button.textContent = 'Segno...';
+          try {
+            await messagesApi(`/api/messages/${message.id}`, {
+              method: 'PATCH',
+              body: JSON.stringify({ status: 'inviato', generatedText: text }),
+            });
+            const sentAt = new Date().toISOString();
+            guestMessages = guestMessages.map(item => String(item.id) === String(message.id)
+              ? { ...item, status: 'inviato', sentAt, generatedText: text }
+              : item
+            );
+            targetMessageId = '';
+            renderGuestMessages();
+            renderGuestBookings();
+            showMessagesNotice('Messaggio segnato come inviato.');
+          } finally {
+            button.disabled = false;
+            button.textContent = originalText;
+          }
+          return;
+        } else if (event.target.closest('[data-postpone-message]')) {
+          const postponedUntil = window.prompt('Nuova data/ora (es. 2026-06-10T10:00):', message.postponedUntil || message.scheduledAt || '');
+          if (!postponedUntil) return;
+          await messagesApi(`/api/messages/${message.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'posticipato', postponedUntil, generatedText: text }),
+          });
+        } else {
+          return;
+        }
+        await loadMessagesModule(true);
+      } catch (error) {
+        if (String(error.message || '').includes('gia applicato') || String(error.message || '').includes('già applicato')) {
+          showMessagesNotice('Messaggio già presente per questa prenotazione. Usa il messaggio esistente in dashboard.', 'info');
+          await loadGuestMessagesOnly();
+        } else {
+          showMessagesError(error.message);
+        }
+      }
+    });
     if (calendarPrev) calendarPrev.addEventListener('click', () => {
       calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1);
       if (lastData) renderCalendar(lastData);
@@ -2049,6 +4210,10 @@
     });
     apartmentFilter.addEventListener('change', () => {
       if (lastData) render(lastData);
+      if (messagesLoaded) {
+        renderGuestMessages();
+        renderGuestBookings();
+      }
     });
     exportDeliveries.addEventListener('click', () => {
       const blob = new Blob([deliveriesToCsv(getDeliveries())], { type: 'text/csv;charset=utf-8' });
@@ -2088,8 +4253,16 @@
       .then(response => response.ok ? response.json() : null)
       .then(me => {
         if (!me) return;
+        currentUserInfo = {
+          email: me.email || '',
+          role: me.role || '',
+          modules: me.modules || null,
+          apartments: me.apartments || null,
+        };
         if (me.role !== 'admin') {
           document.body.classList.add('non-admin-mode');
+        } else {
+          document.body.classList.add('admin-mode');
         }
         if (me.role === 'pulizie') {
           document.body.classList.add('staff-mode');
@@ -2153,8 +4326,8 @@
 
     whatsappSupplier.addEventListener('click', () => {
       const phone = (supplierWhatsapp.value || '').replace(/\D/g, '');
-      const text = encodeURIComponent(supplierText());
-      const url = phone ? `https://wa.me/${phone}?text=${text}` : `https://wa.me/?text=${text}`;
+      const text = encodeWhatsAppText(supplierText());
+      const url = phone ? `https://api.whatsapp.com/send?phone=${phone}&text=${text}` : `https://api.whatsapp.com/send?text=${text}`;
       window.open(url, '_blank', 'noopener');
     });
 
@@ -2164,8 +4337,10 @@
       noticeBox.style.display = 'none';
       button.disabled = true;
       refreshButton.disabled = true;
+      refreshLaundryButton.disabled = true;
       button.textContent = 'Aggiorno...';
       refreshButton.textContent = 'Aggiorno...';
+      refreshLaundryButton.textContent = 'Aggiorno...';
       try {
         const step = (label, action) => {
           try {
@@ -2249,8 +4424,10 @@
       } finally {
         button.disabled = false;
         refreshButton.disabled = false;
+        refreshLaundryButton.disabled = false;
         button.textContent = 'Carica e aggiorna';
         refreshButton.textContent = 'Aggiorna calcoli';
+        refreshLaundryButton.textContent = 'Aggiorna calcoli';
       }
     });
   </script>

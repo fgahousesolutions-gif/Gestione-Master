@@ -1,0 +1,13 @@
+QUESTA CARTELLA E' LA WEBAPP CONTROLLER FGA
+
+Nome attuale progetto Cloudflare Worker: gestione-master
+URL produzione: https://gestione-master.fgahousesolutions.workers.dev
+Nome futuro previsto: WebApp_Controller_FGA
+
+File principali:
+- wrangler.jsonc: configurazione Cloudflare Worker
+- src/main.py: API e logica server Python Worker
+- public/index.html: interfaccia web dell'app
+
+Nota operativa:
+Questa e' la cartella da usare quando si lavora sulla WebApp Controller FGA / gestione-master.
